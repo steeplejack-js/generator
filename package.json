@@ -1,0 +1,19 @@
+{
+  "name": "generator-steeplejack",
+  "version": "1.0.0",
+  "description": "Yeoman generator for creating Steeplejack apps",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/steeplejack-js/generator.git"
+  },
+  "author": "Simon Emms <simon@simonemms.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/steeplejack-js/generator/issues"
+  },
+  "homepage": "https://github.com/steeplejack-js/generator#readme"
+}
