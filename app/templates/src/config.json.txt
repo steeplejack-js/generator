@@ -1,0 +1,14 @@
+{
+  "logging": {
+    "name": "<%= name %>",
+    "streams": {
+      "stdout": {
+        "active": true,
+        "level": "debug"
+      }
+    }
+  },
+  "server": {
+    "port": 9999
+  }
+}

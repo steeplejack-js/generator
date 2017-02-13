@@ -1,0 +1,40 @@
+/**
+ * app
+ */
+
+/* Node modules */
+
+/* Third-party modules */
+const Server = require('steeplejack/lib/server');
+const Steeplejack = require('steeplejack');
+const { Restify } = require('steeplejack-restify');
+
+/* Files */
+const config = require('./config.json');
+const env = require('./envvars.json');
+
+const app = Steeplejack.app({
+  config,
+  env,
+  logger: '$logger',
+  modules: [
+    `${__dirname}/!(routes)/**/*.js`,
+  ],
+  routesDir: 'routes'
+});
+
+const deps = [
+  '$config'
+];
+
+app.run(deps, config => {
+
+  const restify = new Restify();
+
+  const server = new Server(config.server, restify);
+
+  return server;
+
+});
+
+module.exports = app;
