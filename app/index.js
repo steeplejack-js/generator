@@ -202,15 +202,6 @@ module.exports = class Steeplejack extends Generator {
         }
       }
     }, {
-      type: 'list',
-      name: 'quote',
-      message: 'Quotes',
-      choices: [
-        'single',
-        'double'
-      ],
-      default: this.config.get('quote')
-    }, {
       type: 'input',
       name: 'indent',
       message: 'Indent size',
