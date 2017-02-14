@@ -201,21 +201,6 @@ module.exports = class Steeplejack extends Generator {
           return `${prefixUpper}_`;
         }
       }
-    }, {
-      type: 'input',
-      name: 'indent',
-      message: 'Indent size',
-      filter (indent) {
-        const num = Number(indent);
-
-        if (_.isNaN(num)) {
-          return Promise.reject('Indent must be a number');
-        } else if (num < 1) {
-          return Promise.reject('Indent must be greater than 0');
-        }
-
-        return num;
-      }
     }]).then(answers => {
       /* Store the answers */
       this.config.set(answers);
