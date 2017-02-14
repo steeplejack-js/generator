@@ -44,7 +44,7 @@
     <% } %>
     "start": "node<% if (compile) { %>--require source-map-support/register<% } %> ./",
     "test": "npm run test:lint -s && npm run test:unit -s && npm run test:e2e -s",
-    "test:e2e": "mocha <% if (compile) { %>--compilers js:babel-register <% } %.--throw-deprecation --ui bdd --full-trace --recursive test/e2e/test",
+    "test:e2e": "mocha <% if (compile) { %>--compilers js:babel-register <% } %>--throw-deprecation --ui bdd --full-trace --recursive test/e2e/test",
     "test:lint": "npm run test:lint:src -s && npm run test:lint:test",
     <% if (lint === 'airbnb') { %>
     "test:lint:src": "eslint src",
