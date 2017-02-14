@@ -4,13 +4,15 @@
 
 /* Node modules */
 
-/* Third-party modules */
+/* Third-party modules */<% if (compile) { %>
+import bunyan from 'bunyan';
+import Logger from 'steeplejack/lib/logger';<% } else { %>
 const bunyan = require('bunyan');
-const Logger = require('steeplejack/lib/logger');
+const Logger = require('steeplejack/lib/logger');<% } %>
 
 /* Files */
 
-const factory = config => {
+<% if (compile) { %>export default<% } else { %>const factory =<% } %> config => {
   const types = Logger.getLogLevels();
 
   const streams = [];
@@ -37,7 +39,14 @@ const factory = config => {
 
   return new Logger(strategy);
 };
-
+<% if (compile) { %>
+export const inject = {
+  deps: [
+    '$config'
+  ],
+  name: '$logger'
+};
+<% } else { %>
 module.exports = {
   default: factory,
   inject: {
@@ -46,4 +55,4 @@ module.exports = {
     ],
     name: '$logger'
   }
-};
+};<% } %>

@@ -4,14 +4,19 @@
 
 /* Node modules */
 
-/* Third-party modules */
+/* Third-party modules */<% if (compile) { %>
+import Server from 'steeplejack/lib/server';
+import Steeplejack from 'steeplejack/steeplejack';
+import { <%- deps.lodash.upperFirst(server) %> } from 'steeplejack-<%- server %>';<% } else { %>
 const Server = require('steeplejack/lib/server');
 const Steeplejack = require('steeplejack/steeplejack');
-const { <%- deps.lodash.upperFirst(server) %> } = require('steeplejack-<%- server %>');
+const { <%- deps.lodash.upperFirst(server) %> } = require('steeplejack-<%- server %>');<% } %>
 
-/* Files */
+/* Files */<% if (compile) { %>
+import config from './config.json';
+import env from'./envvars.json';<% } else { %>
 const config = require('./config.json');
-const env = require('./envvars.json');
+const env = require('./envvars.json');<% } %>
 
 const app = Steeplejack.app({
   config,
@@ -36,5 +41,6 @@ app.run(deps, $config => {
   return server;
 
 });
-
-module.exports = app;
+<% if (compile) { %>
+export default app;<% } else { %>
+module.exports = app;<% } %>
