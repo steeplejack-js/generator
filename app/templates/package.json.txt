@@ -33,7 +33,7 @@
     "compile:js": "<% if (compile) { %>babel --source-maps=inline --out-dir ./build ./src<% } else { %>cp -Rf src build<% } %>",
     "copy": "npm run copy:json -s & npm run copy:docker -s",
     "copy:docker": "cp Dockerfile build",
-    "copy:json": "cp package.json build",
+    "copy:json": "cp package.json build<% if (compile) { %>; cp src/*.json build<% } %>",
     "coverage": "cross-env NODE_ENV=test nyc mocha --ui bdd --recursive test/unit",
     "dist": "npm run compile && mkdir -p dist && cd build && npm install --production && tar -zcvf ../dist/dist.tar.gz ./",
     "postversion": "git push --tags && git push",
@@ -42,7 +42,7 @@
     <% } else { %>
     "serve": "nodemon ./src/app | bunyan",
     <% } %>
-    "start": "node<% if (compile) { %>--require source-map-support/register<% } %> ./",
+    "start": "node<% if (compile) { %> --require source-map-support/register<% } %> ./",
     "test": "npm run test:lint -s && npm run test:unit -s && npm run test:e2e -s",
     "test:e2e": "mocha <% if (compile) { %>--compilers js:babel-register <% } %>--throw-deprecation --ui bdd --full-trace --recursive test/e2e/test",
     "test:lint": "npm run test:lint:src -s && npm run test:lint:test",

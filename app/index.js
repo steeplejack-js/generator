@@ -98,6 +98,8 @@ module.exports = class Steeplejack extends Generator {
     ];
 
     if (config.compile) {
+      deps.push('source-map-support');
+
       devDeps.push('babel-cli');
       devDeps.push('babel-plugin-istanbul');
       devDeps.push('babel-preset-latest');
