@@ -5,18 +5,18 @@
 /* Node modules */
 
 /* Third-party modules */<% if (compile) { %>
+import { <%- deps.lodash.upperFirst(server) %> } from 'steeplejack-<%- server %>';
 import Server from 'steeplejack/lib/server';
-import Steeplejack from 'steeplejack/steeplejack';
-import { <%- deps.lodash.upperFirst(server) %> } from 'steeplejack-<%- server %>';<% } else { %>
+import Steeplejack from 'steeplejack';<% } else { %>
+const { <%- deps.lodash.upperFirst(server) %> } = require('steeplejack-<%- server %>');
 const Server = require('steeplejack/lib/server');
-const Steeplejack = require('steeplejack/steeplejack');
-const { <%- deps.lodash.upperFirst(server) %> } = require('steeplejack-<%- server %>');<% } %>
+const Steeplejack = require('steeplejack');<% } %>
 
 /* Files */<% if (compile) { %>
-import config from './config.json';
-import env from'./envvars.json';<% } else { %>
-const config = require('./config.json');
-const env = require('./envvars.json');<% } %>
+import config from './config';
+import env from'./envvars';<% } else { %>
+const config = require('./config');
+const env = require('./envvars');<% } %>
 
 const app = Steeplejack.app({
   config,

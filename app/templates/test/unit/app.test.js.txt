@@ -1,0 +1,88 @@
+/**
+ * app.test
+ */
+
+/* Node modules */
+
+/* Third-party modules */
+
+/* Files */<% if (compile) { %>
+import { expect, proxyquire, sinon } from import'../helpers/setup';<% } else { %>
+const { expect, proxyquire, sinon } = require('../helpers/setup');<% } %>
+
+describe('app tests', function () {
+
+  beforeEach('should configure the app bootstrapping', function () {
+    this.config = {
+      server: 'serverObj'
+    };
+    this.envvars = 'envvars';
+
+    this.Restify = sinon.stub();
+
+    this.Server = sinon.stub();
+
+    this.steeplejackInst = {
+      run: sinon.stub()
+    };
+
+    this.steeplejack = {
+      app: sinon.stub()
+        .returns(this.steeplejackInst)
+    };
+
+    this.app = proxyquire('./src/app', {
+      'steeplejack-restify': { Restify: this.Restify },
+      'steeplejack/lib/server': this.Server,
+      'steeplejack': this.steeplejack,
+      './config': this.config,
+      './envvars': this.envvars
+    });
+
+    expect(this.steeplejack.app).to.be.calledOnce
+      .calledWithExactly({
+        config: this.config,
+        env: this.envvars,
+        logger: '$logger',
+        modules: [
+          `${process.cwd()}/src/!(routes)/**/*.js`
+        ],
+        routesDir: 'routes'
+      });
+
+    expect(this.steeplejackInst.run).to.be.calledOnce
+      .calledWith([
+        '$config'
+      ]);
+  });
+
+  describe('#run', function () {
+
+    it.only('should configure the server', function () {
+      const run = this.steeplejackInst.run.args[0][1];
+
+      expect(run).to.be.a('function');
+
+      const restify = {};
+      this.Restify.returns(restify);
+
+      const serverStrategy = {};
+
+      this.Server.returns(serverStrategy);
+
+      const server = run(this.config);
+
+      expect(server).to.be.equal(serverStrategy);
+
+      expect(this.Restify).to.be.calledOnce
+        .calledWithNew
+        .calledWithExactly();
+
+      expect(this.Server).to.be.calledOnce
+        .calledWithNew
+        .calledWithExactly(this.config.server, restify);
+    });
+
+  });
+
+});

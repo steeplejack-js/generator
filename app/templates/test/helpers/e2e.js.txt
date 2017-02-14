@@ -1,0 +1,25 @@
+/**
+ * e2e
+ *
+ * Helps us set up the end-to-end tests.
+ */
+
+/* Node modules */
+
+/* Third-party modules */
+const supertest = require('supertest');
+
+/* Files */
+const {expect} = require('./setup');
+const server = require('../../src/app');
+
+/* Get the app */
+const {app} = server.default || server;
+
+/* Create a request object with the application injected */
+const request = supertest(app);
+
+export {
+  expect,
+  request
+};
