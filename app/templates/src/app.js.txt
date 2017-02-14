@@ -6,8 +6,8 @@
 
 /* Third-party modules */
 const Server = require('steeplejack/lib/server');
-const Steeplejack = require('steeplejack');
-const { Restify } = require('steeplejack-restify');
+const Steeplejack = require('steeplejack/steeplejack');
+const { <%- deps.lodash.upperFirst(server) %> } = require('steeplejack-<%- server %>');
 
 /* Files */
 const config = require('./config.json');
@@ -27,11 +27,11 @@ const deps = [
   '$config'
 ];
 
-app.run(deps, config => {
+app.run(deps, $config => {
 
-  const restify = new Restify();
+  const <%- server %> = new <%- deps.lodash.upperFirst(server) %>();
 
-  const server = new Server(config.server, restify);
+  const server = new Server($config.server, <%- server %>);
 
   return server;
 

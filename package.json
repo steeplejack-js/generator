@@ -4,7 +4,7 @@
   "description": "Yeoman generator for creating Steeplejack apps",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "semistandard"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,24 @@
   "bugs": {
     "url": "https://github.com/steeplejack-js/generator/issues"
   },
-  "homepage": "https://github.com/steeplejack-js/generator#readme"
+  "homepage": "https://github.com/steeplejack-js/generator#readme",
+  "keywords": [
+    "yeoman-generator",
+    "yeoman",
+    "generator"
+  ],
+  "files": [
+    "app"
+  ],
+  "dependencies": {
+    "gulp-beautify": "^2.0.1",
+    "inquirer": "^3.0.1",
+    "lodash": "^4.17.4",
+    "walk": "^2.3.9",
+    "yeoman-generator": "^1.1.0",
+    "yosay": "^1.2.1"
+  },
+  "devDependencies": {
+    "semistandard": "^9.2.1"
+  }
 }

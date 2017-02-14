@@ -1,14 +1,14 @@
 {
   "logging": {
-    "name": "<%= envvarPrefix %>LOGGING_STREAMS_NAME",
+    "name": "<%- envvarPrefix %>LOGGING_STREAMS_NAME",
     "streams": {
       "stdout": {
-        "active": "<%= envvarPrefix %>LOGGING_STREAMS_STDOUT_ACTIVE",
-        "level": "<%= envvarPrefix %>LOGGING_STREAMS_STDOUT_LEVEL"
+        "active": "<%- envvarPrefix %>LOGGING_STREAMS_STDOUT_ACTIVE",
+        "level": "<%- envvarPrefix %>LOGGING_STREAMS_STDOUT_LEVEL"
       }
     }
   },
   "server": {
-    "port": "<%= envvarPrefix %>SERVER_PORT"
+    "port": "<%- envvarPrefix %>SERVER_PORT"
   }
 }

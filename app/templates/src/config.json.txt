@@ -1,6 +1,6 @@
 {
   "logging": {
-    "name": "<%= name %>",
+    "name": "<%- name %>",
     "streams": {
       "stdout": {
         "active": true,
