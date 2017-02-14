@@ -7,7 +7,7 @@
 /* Third-party modules */
 
 /* Files */<% if (compile) { %>
-import { expect, proxyquire, sinon } from import'../helpers/setup';<% } else { %>
+import { expect, proxyquire, sinon } from '../helpers/setup';<% } else { %>
 const { expect, proxyquire, sinon } = require('../helpers/setup');<% } %>
 
 describe('app tests', function () {
@@ -35,8 +35,8 @@ describe('app tests', function () {
       'steeplejack-restify': { Restify: this.Restify },
       'steeplejack/lib/server': this.Server,
       'steeplejack': this.steeplejack,
-      './config': this.config,
-      './envvars': this.envvars
+      './config.json': this.config,
+      './envvars.json': this.envvars
     });
 
     expect(this.steeplejack.app).to.be.calledOnce

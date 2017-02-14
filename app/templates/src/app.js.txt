@@ -13,10 +13,10 @@ const Server = require('steeplejack/lib/server');
 const Steeplejack = require('steeplejack');<% } %>
 
 /* Files */<% if (compile) { %>
-import config from './config';
-import env from'./envvars';<% } else { %>
-const config = require('./config');
-const env = require('./envvars');<% } %>
+import config from './config.json';
+import env from'./envvars.json';<% } else { %>
+const config = require('./config.json');
+const env = require('./envvars.json');<% } %>
 
 const app = Steeplejack.app({
   config,

@@ -97,6 +97,13 @@ module.exports = class Steeplejack extends Generator {
       'supertest'
     ];
 
+    if (config.compile) {
+      devDeps.push('babel-cli');
+      devDeps.push('babel-plugin-istanbul');
+      devDeps.push('babel-preset-latest');
+      devDeps.push('babel-watch');
+    }
+
     switch (config.lint) {
 
       case 'standard':
@@ -111,6 +118,9 @@ module.exports = class Steeplejack extends Generator {
         devDeps.push('eslint-plugin-import');
         devDeps.push('eslint-plugin-jsx-a11y');
         devDeps.push('eslint-plugin-react');
+        if (config.compile) {
+          devDeps.push('babel-eslint');
+        }
         break;
 
       default:
@@ -224,6 +234,10 @@ module.exports = class Steeplejack extends Generator {
 
     if (config.lint !== 'airbnb') {
       ignore.push('.eslintrc');
+    }
+
+    if (!config.compile) {
+      ignore.push('.babelrc');
     }
 
     walk.walkSync(this.templatePath(), {
