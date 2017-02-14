@@ -216,7 +216,15 @@ module.exports = class Steeplejack extends Generator {
     /* Start with saving the config */
     this.config.save();
 
+    const config = this.config.getAll();
+
     const files = [];
+
+    const ignore = [];
+
+    if (config.lint !== 'airbnb') {
+      ignore.push('.eslintrc');
+    }
 
     walk.walkSync(this.templatePath(), {
       listeners: {
@@ -232,19 +240,21 @@ module.exports = class Steeplejack extends Generator {
     });
 
     /* Write all the templates to the desination */
-    const config = this.config.getAll();
     config.deps = {
       lodash: _
     };
 
     files.forEach(file => {
       const dst = file.replace(/\.txt$/, '');
-      const template = this.templatePath(file);
 
-      /* Remove any .txt ending */
-      const destination = this.destinationPath(dst);
+      if (ignore.indexOf(dst) === -1) {
+        const template = this.templatePath(file);
 
-      this.fs.copyTpl(template, destination, config);
+        /* Remove any .txt ending */
+        const destination = this.destinationPath(dst);
+
+        this.fs.copyTpl(template, destination, config);
+      }
     });
   }
 
