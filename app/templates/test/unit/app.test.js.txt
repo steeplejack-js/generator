@@ -12,77 +12,52 @@ const { expect, proxyquire, sinon } = require('../helpers/setup');<% } %>
 
 describe('app tests', function () {
 
-  beforeEach('should configure the app bootstrapping', function () {
-    this.config = {
-      server: 'serverObj'
+  it('should configure the app bootstrapping', function () {
+    const config = {
+      server: 'serverObj',
     };
-    this.envvars = 'envvars';
+    const env = 'envvars';
 
-    this.Restify = sinon.stub();
-
-    this.Server = sinon.stub();
-
-    this.steeplejackInst = {
-      run: sinon.stub()
+    const steeplejackInst = {
+      run: sinon.stub(),
     };
 
-    this.steeplejack = {
+    const steeplejack = {
       app: sinon.stub()
-        .returns(this.steeplejackInst)
+        .returns(steeplejackInst),
     };
 
-    this.app = proxyquire('./src/app', {
-      'steeplejack-restify': { Restify: this.Restify },
-      'steeplejack/lib/server': this.Server,
-      'steeplejack': this.steeplejack,
-      './config.json': this.config,
-      './envvars.json': this.envvars
-    });
+    const app = proxyquire('./src/app', {
+      steeplejack: steeplejack,
+      './config.json': config,
+      './envvars.json': env,
+    })<% if (compile) { %>.default<% } %>;
 
-    expect(this.steeplejack.app).to.be.calledOnce
+    expect(app).to.be.equal(steeplejackInst);
+
+    expect(steeplejack.app).to.be.calledOnce
       .calledWithExactly({
-        config: this.config,
-        env: this.envvars,
+        config,
+        env,
         logger: '$logger',
         modules: [
-          `${process.cwd()}/src/!(routes)/**/*.js`
+          `${process.cwd()}/src/!(routes)/**/*.js`,
         ],
-        routesDir: 'routes'
+        routesDir: 'routes',
       });
 
-    expect(this.steeplejackInst.run).to.be.calledOnce
+    expect(steeplejackInst.run).to.be.calledOnce
       .calledWith([
-        '$config'
+        'server',
       ]);
-  });
 
-  describe('#run', function () {
+    const run = steeplejackInst.run.args[0][1];
 
-    it.only('should configure the server', function () {
-      const run = this.steeplejackInst.run.args[0][1];
+    expect(run).to.be.a('function');
 
-      expect(run).to.be.a('function');
+    const server = {};
 
-      const restify = {};
-      this.Restify.returns(restify);
-
-      const serverStrategy = {};
-
-      this.Server.returns(serverStrategy);
-
-      const server = run(this.config);
-
-      expect(server).to.be.equal(serverStrategy);
-
-      expect(this.Restify).to.be.calledOnce
-        .calledWithNew
-        .calledWithExactly();
-
-      expect(this.Server).to.be.calledOnce
-        .calledWithNew
-        .calledWithExactly(this.config.server, restify);
-    });
-
+    expect(run(server)).to.be.equal(server);
   });
 
 });

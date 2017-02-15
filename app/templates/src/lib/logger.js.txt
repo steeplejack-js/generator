@@ -45,8 +45,7 @@ export const inject = {
     '$config'
   ],
   name: '$logger'
-};
-<% } else { %>
+};<% } else { %>
 module.exports = {
   default: factory,
   inject: {

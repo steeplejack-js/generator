@@ -242,6 +242,12 @@ module.exports = class Steeplejack extends Generator {
       ignore.push('.babelrc');
     }
 
+    if (config.server === 'express') {
+      ignore.push('src/lib/restify.js');
+    } else if (config.server === 'restify') {
+      ignore.push('src/lib/express.js');
+    }
+
     walk.walkSync(this.templatePath(), {
       listeners: {
         file: (root, fileStats, next) => {
