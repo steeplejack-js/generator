@@ -14,10 +14,10 @@ const {expect} = require('./setup');
 const server = require('../../src/app');
 
 /* Get the app */
-const {app} = server.default || server;
+const app = server.default || server;
 
 /* Create a request object with the application injected */
-const request = supertest(app);
+const request = supertest(app.server.getServer());
 
 export {
   expect,
