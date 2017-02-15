@@ -1,0 +1,24 @@
+/**
+ * express
+ */
+
+/* Node modules */
+
+/* Third-party modules */<% if (compile) { %>
+import {Express} from 'steeplejack-express';<% } else { %>
+const {Express} = require('steeplejack-express');<% } %>
+
+/* Files */
+
+<% if (compile) { %>export default<% } else { %>const factory =<% } %> () => Express;
+<% if (compile) { %>
+export const inject = {
+  name: 'Express'
+};<% } else { %>
+module.exports = {
+  default: factory,
+  inject: {
+    name: 'Express'
+  }
+};
+<% } %>

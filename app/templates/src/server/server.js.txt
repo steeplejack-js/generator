@@ -1,0 +1,38 @@
+/**
+ * server
+ */
+
+/* Node modules */
+
+/* Third-party modules */<% if (compile) { %>
+import Server from 'steeplejack/lib/server';<% } else { %>
+const Server = require('steeplejack/lib/server');<% } %>
+
+/* Files */
+
+<% if (compile) { %>export default<% } else { %>const factory =<% } %> (config, <%- deps.lodash.upperFirst(server) %>) => {
+  const <%- server %> = new <%- deps.lodash.upperFirst(server) %>();
+
+  const server = new Server(config.server, <%- server %>);
+
+  return server;
+};
+<% if (compile) { %>
+export const inject = {
+  name: 'server',
+  deps: [
+    '$config',
+    '<%- deps.lodash.upperFirst(server) %>'
+  ]
+};<% } else { %>
+module.exports = {
+  default: factory,
+  inject: {
+    name: 'server',
+    deps: [
+      '$config',
+      '<%- deps.lodash.upperFirst(server) %>',
+    ]
+  }
+};
+<% } %>
