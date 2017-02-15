@@ -4,15 +4,11 @@
 
 /* Node modules */
 
-/* Third-party modules */<% if (compile) { %>
-import bunyan from 'bunyan';
-import Logger from 'steeplejack/lib/logger';<% } else { %>
-const bunyan = require('bunyan');
-const Logger = require('steeplejack/lib/logger');<% } %>
+/* Third-party modules */
 
 /* Files */
 
-<% if (compile) { %>export default<% } else { %>const factory =<% } %> config => {
+<% if (compile) { %>export default<% } else { %>const factory =<% } %> (bunyan, Logger, config) => {
   const types = Logger.getLogLevels();
 
   const streams = [];
@@ -30,9 +26,7 @@ const Logger = require('steeplejack/lib/logger');<% } %>
   });
 
   const strategy = types.reduce((result, type) => {
-    result[type] = (...args) => {
-      logger[type](...args);
-    };
+    result[type] = (...args) => logger[type](...args);
 
     return result;
   }, {});
@@ -41,17 +35,21 @@ const Logger = require('steeplejack/lib/logger');<% } %>
 };
 <% if (compile) { %>
 export const inject = {
+  name: '$logger',
   deps: [
+    'bunyan',
+    'steeplejack-logger',
     '$config'
-  ],
-  name: '$logger'
+  ]
 };<% } else { %>
 module.exports = {
   default: factory,
   inject: {
+    name: '$logger',
     deps: [
-      '$config',
-    ],
-    name: '$logger'
+      'bunyan',
+      'steeplejack-logger',
+      '$config'
+    ]
   }
 };<% } %>
