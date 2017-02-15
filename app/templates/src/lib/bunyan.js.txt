@@ -1,0 +1,23 @@
+/**
+ * express
+ */
+
+/* Node modules */
+
+/* Third-party modules */<% if (compile) { %>
+import bunyan from 'bunyan';<% } else { %>
+const bunyan = require('bunyan');<% } %>
+
+/* Files */
+
+<% if (compile) { %>export default<% } else { %>const factory =<% } %> () => bunyan;
+<% if (compile) { %>
+export const inject = {
+  name: 'bunyan'
+};<% } else { %>
+module.exports = {
+  default: factory,
+  inject: {
+    name: 'bunyan'
+  }
+};<% } %>

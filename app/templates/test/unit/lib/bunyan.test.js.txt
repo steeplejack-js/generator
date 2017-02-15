@@ -1,0 +1,44 @@
+/**
+ * bunyan.test.js
+ */
+
+/* Node modules */
+
+/* Third-party modules */<% if (compile) { %>
+import bunyanLib from 'bunyan';<% } else { %>
+const bunyan = require('bunyan');<% } %>
+
+/* Files */<% if (compile) { %>
+import {expect} from '../../helpers/setup';
+import bunyan, {inject} from '../../../src/lib/bunyan';<% } else { %>
+const {expect} = require('../../helpers/setup');
+const factory = require('../../../src/lib/bunyan');
+
+const bunyan = factory.default;
+const inject = factory.inject;<% } %>
+
+describe('bunyan tests', function () {
+
+  describe('#inject', function () {
+
+    it('should define the injector', function () {
+
+      expect(inject).to.be.eql({
+        name: 'bunyan'
+      });
+
+    });
+
+  });
+
+  describe('#factory', function () {
+
+    it('should return the bunyan class', function () {
+
+      expect(bunyan()).to.be.equal(bunyanLib);
+
+    });
+
+  });
+
+});
