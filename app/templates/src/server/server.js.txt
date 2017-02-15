@@ -4,13 +4,11 @@
 
 /* Node modules */
 
-/* Third-party modules */<% if (compile) { %>
-import Server from 'steeplejack/lib/server';<% } else { %>
-const Server = require('steeplejack/lib/server');<% } %>
+/* Third-party modules */
 
 /* Files */
 
-<% if (compile) { %>export default<% } else { %>const factory =<% } %> (config, <%- deps.lodash.upperFirst(server) %>) => {
+<% if (compile) { %>export default<% } else { %>const factory =<% } %> (Server, config, <%- deps.lodash.upperFirst(server) %>) => {
   const <%- server %> = new <%- deps.lodash.upperFirst(server) %>();
 
   const server = new Server(config.server, <%- server %>);
@@ -21,6 +19,7 @@ const Server = require('steeplejack/lib/server');<% } %>
 export const inject = {
   name: 'server',
   deps: [
+    'steeplejack-server',
     '$config',
     '<%- deps.lodash.upperFirst(server) %>'
   ]
@@ -30,8 +29,9 @@ module.exports = {
   inject: {
     name: 'server',
     deps: [
+      'steeplejack-server',
       '$config',
-      '<%- deps.lodash.upperFirst(server) %>',
+      '<%- deps.lodash.upperFirst(server) %>'
     ]
   }
 };

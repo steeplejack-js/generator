@@ -1,0 +1,69 @@
+/**
+ * <%- server %>.test.js
+ */
+
+/* Node modules */
+
+/* Third-party modules */
+
+/* Files */<% if (compile) { %>
+import {expect, sinon} from '../../helpers/setup';
+import server, {inject} from '../../../src/server/server';<% } else { %>
+const {expect, sinon} = require('../../helpers/setup');
+const factory = require('../../../src/server/server');
+
+const server = factory.default;
+const inject = factory.inject;<% } %>
+
+describe('server tests', function () {
+
+  describe('#inject', function () {
+
+    it('should define the injector', function () {
+
+      expect(inject).to.be.eql({
+        name: 'server',
+        deps: [
+          'steeplejack-server',
+          '$config',
+          '<%- deps.lodash.upperFirst(server) %>'
+        ]
+      });
+
+    });
+
+  });
+
+  describe('#factory', function () {
+
+    beforeEach(function () {
+      this.config = {
+        server: 'serverConfig'
+      };
+
+      this.<%- server %>Inst = {};
+      this.<%- deps.lodash.upperFirst(server) %> = sinon.stub()
+        .returns(this.<%- server %>Inst);
+
+      this.serverInst = {};
+      this.Server = sinon.stub()
+        .returns(this.serverInst);
+    });
+
+    it('should create a <%- deps.lodash.upperFirst(server) %> server and ', function () {
+      const obj = server(this.Server, this.config, this.<%- deps.lodash.upperFirst(server) %>);
+
+      expect(obj).to.be.equal(this.serverInst);
+
+      expect(this.<%- deps.lodash.upperFirst(server) %>).to.be.calledOnce
+        .calledWithNew
+        .calledWithExactly();
+
+      expect(this.Server).to.be.calledOnce
+        .calledWithNew
+        .calledWithExactly('serverConfig', this.<%- server %>Inst);
+    });
+
+  });
+
+});

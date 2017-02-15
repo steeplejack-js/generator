@@ -1,0 +1,44 @@
+/**
+ * restify.test.js
+ */
+
+/* Node modules */
+
+/* Third-party modules */<% if (compile) { %>
+import {Restify} from 'steeplejack-restify';<% } else { %>
+const {Restify} = require('steeplejack-restify');<% } %>
+
+/* Files */<% if (compile) { %>
+import {expect} from '../../helpers/setup';
+import restify, {inject} from '../../../src/lib/restify';<% } else { %>
+const {expect} = require('../../helpers/setup');
+const factory = require('../../../src/lib/restify');
+
+const restify = factory.default;
+const inject = factory.inject;<% } %>
+
+describe('restify tests', function () {
+
+  describe('#inject', function () {
+
+    it('should define the injector', function () {
+
+      expect(inject).to.be.eql({
+        name: 'Restify'
+      });
+
+    });
+
+  });
+
+  describe('#factory', function () {
+
+    it('should return the Restify class', function () {
+
+      expect(restify()).to.be.equal(Restify);
+
+    });
+
+  });
+
+});

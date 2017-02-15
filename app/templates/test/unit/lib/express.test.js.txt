@@ -1,0 +1,44 @@
+/**
+ * express.test.js
+ */
+
+/* Node modules */
+
+/* Third-party modules */<% if (compile) { %>
+import {Express} from 'steeplejack-express';<% } else { %>
+const {Express} = require('steeplejack-express');<% } %>
+
+/* Files */<% if (compile) { %>
+import {expect} from '../../helpers/setup';
+import express, {inject} from '../../../src/lib/express';<% } else { %>
+const {expect} = require('../../helpers/setup');
+const factory = require('../../../src/lib/express');
+
+const express = factory.default;
+const inject = factory.inject;<% } %>
+
+describe('express tests', function () {
+
+  describe('#inject', function () {
+
+    it('should define the injector', function () {
+
+      expect(inject).to.be.eql({
+        name: 'Express'
+      });
+
+    });
+
+  });
+
+  describe('#factory', function () {
+
+    it('should return the Express class', function () {
+
+      expect(express()).to.be.equal(Express);
+
+    });
+
+  });
+
+});

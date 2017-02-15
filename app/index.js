@@ -244,8 +244,10 @@ module.exports = class Steeplejack extends Generator {
 
     if (config.server === 'express') {
       ignore.push('src/lib/restify.js');
+      ignore.push('test/unit/lib/restify.test.js');
     } else if (config.server === 'restify') {
       ignore.push('src/lib/express.js');
+      ignore.push('test/unit/lib/express.test.js');
     }
 
     walk.walkSync(this.templatePath(), {
