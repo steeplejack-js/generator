@@ -22,8 +22,8 @@
     "generator"
   ],
   "files": [
-    "generators/app/index.js",
-    "generators/route/index.js"
+    "generators/app",
+    "generators/route"
   ],
   "dependencies": {
     "gulp-beautify": "^2.0.1",
