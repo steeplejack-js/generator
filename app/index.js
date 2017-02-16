@@ -199,10 +199,12 @@ module.exports = class Steeplejack extends Generator {
     }, {
       type: 'input',
       name: 'envvarPrefix',
-      message: 'Environment variable prefix',
-      default: this.config.get('envvarPrefix') || '',
+      message: 'Environment variable prefix [<none> for no prefix]',
+      default: this.config.get('envvarPrefix') || '<none>',
       filter (prefix) {
-        if (_.isEmpty(prefix) === false) {
+        if (prefix === '<none>') {
+          return '';
+        } else if (_.isEmpty(prefix) === false) {
           if (/^\W/.test(prefix)) {
             return Promise.reject('Envvar prefix must begin with a letter');
           }
