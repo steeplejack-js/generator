@@ -67,7 +67,7 @@ module.exports = class Steeplejack extends Generator {
       method: 'GET',
       url: 'hello/world',
       description: 'Some very long description that I\'m going to put on multiple lines'
-    }
+    };
     // return this.prompt([{
     //   type: 'list',
     //   name: 'method',

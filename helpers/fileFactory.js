@@ -32,13 +32,10 @@ const factories = {
     // console.log(tree.var('a'));
     // console.log(tree.toString());
     // process.exit();
-
   },
 
   route (generator, opts) {
-
     factories.base(generator, opts);
-
   },
 
   truncate (string, length, useWordBoundary, separator = '...') {
@@ -53,13 +50,12 @@ const factories = {
   },
 
   truncateWrap (string, length = 50) {
-    if (_.isString(string) === false ) { string = ''; }
+    if (_.isString(string) === false) { string = ''; }
 
     const out = [];
 
     let cursor = 0;
     do {
-
       const tmp = string.substr(cursor);
 
       const split = this.truncate(tmp, length, true, '');
@@ -71,7 +67,6 @@ const factories = {
       }
 
       cursor += split.length;
-
     } while (cursor < string.length);
 
     return out;
