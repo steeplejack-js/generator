@@ -17,15 +17,7 @@ const walk = require('walk');
 const yosay = require('yosay');
 
 /* Files */
-
-const validate = {
-  required (input) {
-    if (_.isEmpty(input)) {
-      return Promise.reject('Required');
-    }
-    return input;
-  }
-};
+const validate = require('../../helpers/validation');
 
 module.exports = class Steeplejack extends Generator {
 
@@ -166,9 +158,7 @@ module.exports = class Steeplejack extends Generator {
       name: 'author',
       message: 'Author',
       default: this.config.get('author'),
-      filter (author) {
-        return validate.required(author);
-      }
+      filter: author => validate.required(author)
     }, {
       type: 'list',
       name: 'lint',
