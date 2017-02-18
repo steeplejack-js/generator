@@ -65,7 +65,8 @@ module.exports = class Steeplejack extends Generator {
   prompting () {
     this.answers = {
       method: 'GET',
-      url: 'hello/world'
+      url: 'hello/world',
+      description: 'Some very long description that I\'m going to put on multiple lines'
     }
     // return this.prompt([{
     //   type: 'list',
@@ -108,13 +109,14 @@ module.exports = class Steeplejack extends Generator {
    * Writes the route files
    */
   writing () {
-    return fileFactory(this, {
+    return fileFactory(this, 'route', {
       compile: true,
+      description: this.answers.description,
       path: `src/routes/${this.answers.url}.js`,
-      type: 'route'
-    }, {
-      method: this.answers.method,
-      type: 'route'
+      opts: {
+        method: this.answers.method,
+        type: 'route'
+      }
     });
   }
 

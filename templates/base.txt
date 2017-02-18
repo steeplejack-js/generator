@@ -1,0 +1,17 @@
+/**
+ * <%- name %><% if (description.length > 0) { %>
+ * <% description.forEach(function (line) { %>
+ * <%- line %><% }) %><% } %>
+ */
+
+/* Node modules */<% if (deps.node) { %>
+<% } %>
+
+/* Third-party modules */<% if (deps.third) { %>
+<% } %>
+
+/* Files */<% if (deps.file) { %>
+<% } %>
+<% if (compile) { %>
+export default app;<% } else { %>
+module.exports = app;<% } %>
