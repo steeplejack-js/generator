@@ -94,7 +94,6 @@ module.exports = class Steeplejack extends Generator {
       devDeps.push('babel-cli');
       devDeps.push('babel-plugin-istanbul');
       devDeps.push('babel-preset-latest');
-      devDeps.push('babel-watch');
     }
 
     switch (config.lint) {

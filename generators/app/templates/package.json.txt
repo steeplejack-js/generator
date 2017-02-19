@@ -37,11 +37,7 @@
     "coverage": "cross-env NODE_ENV=test nyc mocha --ui bdd --recursive test/unit",
     "dist": "npm run compile && mkdir -p dist && cd build && npm install --production && tar -zcvf ../dist/dist.tar.gz ./",
     "postversion": "git push --tags && git push",
-    <% if (compile) { %>
-    "serve": "TMPDIR=/tmp babel-watch --debug 5858 ./src/app.js | bunyan",
-    <% } else { %>
-    "serve": "nodemon ./src/app | bunyan",
-    <% } %>
+    "serve": "nodemon<% if (compile) { %> --exec babel-node<% } %> --debug=5858 --legacy-watch ./src/app.js | bunyan",
     "start": "node<% if (compile) { %> --require source-map-support/register<% } %> ./",
     "test": "npm run test:lint -s && npm run test:unit -s && npm run test:e2e -s",
     "test:e2e": "<%- envvarPrefix %>LOGGING_STREAMS_STDOUT_ACTIVE=false mocha <% if (compile) { %>--compilers js:babel-register <% } %>--throw-deprecation --ui bdd --full-trace --recursive test/e2e/test",
