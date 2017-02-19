@@ -24,7 +24,7 @@ const app = Steeplejack.app({
   modules: [
     `${__dirname}/!(routes)/**/*.js`,
   ],
-  routesDir: 'routes'
+  routesDir: `${__dirname}/routes`
 });
 
 /* Load up the server */
