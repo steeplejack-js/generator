@@ -68,39 +68,39 @@ module.exports = class Steeplejack extends Generator {
       url: 'hello/world',
       description: 'Some very long description that I\'m going to put on multiple lines'
     };
-    // return this.prompt([{
-    //   type: 'list',
-    //   name: 'method',
-    //   message: 'HTTP method',
-    //   choices: Router.allowableMethods
-    // }, {
-    //   type: 'input',
-    //   name: 'url',
-    //   message: 'URL',
-    //   filter: url => {
-    //     let formatted = `/${url}/`
-    //       .replace(/(\/+)/g, '/');
-    //
-    //     if (formatted !== '/') {
-    //       formatted = formatted
-    //         .replace(/\/$/, '');
-    //     }
-    //
-    //     return validate.required(formatted)
-    //   }
-    // }, {
-    //   type: 'confirm',
-    //   name: 'confirm',
-    //   message: answers => `This will create the route ${answers.method}:${answers.url} - are you sure?`
-    // }]).then(answers => {
-    //   if (!answers.confirm) {
-    //     /* Denied */
-    //     this.log(yosay('Cancelled'));
-    //     process.exit(1);
-    //   }
-    //
-    //   this.answers = answers;
-    // });
+    return this.prompt([{
+      type: 'list',
+      name: 'method',
+      message: 'HTTP method',
+      choices: Router.allowableMethods
+    }, {
+      type: 'input',
+      name: 'url',
+      message: 'URL',
+      filter: url => {
+        let formatted = `/${url}/`
+          .replace(/(\/+)/g, '/');
+
+        if (formatted !== '/') {
+          formatted = formatted
+            .replace(/\/$/, '');
+        }
+
+        return validate.required(formatted)
+      }
+    }, {
+      type: 'confirm',
+      name: 'confirm',
+      message: answers => `This will create the route ${answers.method}:${answers.url} - are you sure?`
+    }]).then(answers => {
+      if (!answers.confirm) {
+        /* Denied */
+        this.log(yosay('Cancelled'));
+        process.exit(1);
+      }
+
+      this.answers = answers;
+    });
   }
 
   /**

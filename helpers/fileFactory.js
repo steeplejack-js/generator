@@ -14,17 +14,18 @@ const program = require('ast-query');
 const factories = {
 
   base (generator, opts) {
-    const target = generator.destinationPath(opts.path);
 
     opts.deps = opts.deps || {};
-    opts.name = path.parse(target).name;
+    opts.name = path.parse(opts.path).name;
 
-    if (!generator.fs.exists(target)) {
+    if (!generator.fs.exists(opts.path)) {
       /* Create the base file */
       const dest = generator.templatePath('../../../templates/base.txt');
 
-      generator.fs.copyTpl(dest, target, opts);
+      generator.fs.copyTpl(dest, opts.path, opts);
     }
+
+    return generator.fs.read(opts.path);
 
     // const tree = program('');
     // tree.body.append(tree.verbatim('// hello'));
@@ -35,7 +36,10 @@ const factories = {
   },
 
   route (generator, opts) {
-    factories.base(generator, opts);
+    const content = factories.base(generator, opts);
+
+    console.log(content);
+    process.exit();
   },
 
   truncate (string, length, useWordBoundary, separator = '...') {
@@ -75,6 +79,8 @@ const factories = {
 };
 
 module.exports = (generator, factory, opts) => {
+  opts.path = generator.destinationPath(opts.path);
+
   opts.description = factories.truncateWrap(opts.description);
 
   factories[factory](generator, opts);
