@@ -144,7 +144,10 @@ module.exports = class Steeplejack extends Generator {
       type: 'input',
       name: 'name',
       message: 'Project name',
-      default: this.config.get('name') || this.appname
+      default: this.config.get('name') || this.appname,
+      filter: name => name.replace(/[\W\s]/g, '-')
+        .replace(/(-){2,}/, '-')
+        .replace(/(-+)$/, '')
     }, {
       type: 'input',
       name: 'description',
