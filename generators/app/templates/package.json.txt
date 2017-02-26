@@ -26,7 +26,7 @@
     "instrument": <%- !compile %>
   },
   "scripts": {
-    "clean": "rm -Rf ./build ./coverage",
+    "clean": "rm -Rf ./build ./coverage ./dist",
     "clean:all": "npm run clean && rm -Rf .nyc_output npm-debug.log",
     "ci": "npm test -s && npm run coverage -s && npm run compile -s",
     "compile": "npm run clean && npm run compile:js -s && npm run copy",
