@@ -5,12 +5,15 @@
 /* Node modules */
 
 /* Third-party modules */<% if (compile) { %>
-import {Express} from 'steeplejack-express';<% } else { %>
-const {Express} = require('steeplejack-express');<% } %>
+import {Express, expressLib} from 'steeplejack-express';<% } else { %>
+const {Express, expressLib} = require('steeplejack-express');<% } %>
 
 /* Files */
 
-<% if (compile) { %>export default<% } else { %>const factory =<% } %> () => Express;
+<% if (compile) { %>export default<% } else { %>const factory =<% } %> () => ({
+  Express,
+  expressLib
+})
 <% if (compile) { %>
 export const inject = {
   name: 'Express'
