@@ -22,7 +22,7 @@ const app = Steeplejack.app({
   env,
   logger: '$logger',
   modules: [
-    `${__dirname}/!(routes)/**/*.js`,
+    `${__dirname}/!(node_modules|routes)/**/*.js`,
   ],
   routesDir: `${__dirname}/routes`
 });
