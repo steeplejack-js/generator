@@ -229,6 +229,7 @@ module.exports = class Steeplejack extends Generator {
 
     if (config.lint !== 'airbnb') {
       ignore.push('.eslintrc');
+      ignore.push('test/.eslintrc');
     }
 
     if (!config.compile) {

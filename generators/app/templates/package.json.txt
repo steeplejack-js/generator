@@ -44,7 +44,7 @@
     "test:lint": "npm run test:lint:src -s && npm run test:lint:test",
     <% if (lint === 'airbnb') { %>
     "test:lint:src": "eslint src",
-    "test:lint:test": "eslint --env mocha --rule '{ max-lines: 0, global-require: 0, import/no-dynamic-require: 0, padded-blocks: 0, prefer-arrow-callback: 0, no-underscore-dangle: 0, func-names: 0, no-unused-expressions: 0, import/prefer-default-export: 0 }' test",
+    "test:lint:test": "eslint test",
     <% } else if (lint === 'standard') { %>
     "test:lint:src": "standard src",
     "test:lint:test": "standard test",
