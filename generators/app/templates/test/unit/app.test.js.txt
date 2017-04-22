@@ -41,9 +41,9 @@ describe('app tests', function () {
         env,
         logger: '$logger',
         modules: [
-          `${process.cwd()}/src/!(routes)/**/*.js`,
+          `${process.cwd()}/src/!(node_modules|routes)/**/*.js`,
         ],
-        routesDir: 'routes',
+        routesDir: `${process.cwd()}/src/routes`,
       });
 
     expect(steeplejackInst.run).to.be.calledOnce
