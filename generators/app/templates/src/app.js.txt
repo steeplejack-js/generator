@@ -2,6 +2,10 @@
  * app
  *
  * <%- description %>
+ *
+ * Built with Steeplejack
+ *
+ * @link https://getsteeplejack.com
  */
 
 /* Node modules */

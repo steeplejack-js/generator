@@ -2,4 +2,4 @@
 
 <%- description %>
 
-A [Steeplejack](http://steeplejack.info) application
+Built with [Steeplejack](https://getsteeplejack.com)
