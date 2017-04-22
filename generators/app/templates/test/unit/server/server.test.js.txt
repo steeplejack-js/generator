@@ -42,20 +42,22 @@ describe('server tests', function () {
       };
 
       this.<%- server %>Inst = {};
-      this.<%- deps.lodash.upperFirst(server) %> = sinon.stub()
-        .returns(this.<%- server %>Inst);
+      this.serverLib = {
+        <%- deps.lodash.upperFirst(server) %>: sinon.stub()
+          .returns(this.<%- server %>Inst)
+      };
 
       this.serverInst = {};
       this.Server = sinon.stub()
         .returns(this.serverInst);
     });
 
-    it('should create a <%- deps.lodash.upperFirst(server) %> server and ', function () {
-      const obj = server(this.Server, this.config, this.<%- deps.lodash.upperFirst(server) %>);
+    it('should create a server and configure <%- deps.lodash.upperFirst(server) %> as the strategy', function () {
+      const obj = server(this.Server, this.config, this.serverLib);
 
       expect(obj).to.be.equal(this.serverInst);
 
-      expect(this.<%- deps.lodash.upperFirst(server) %>).to.be.calledOnce
+      expect(this.serverLib.<%- deps.lodash.upperFirst(server) %>).to.be.calledOnce
         .calledWithNew
         .calledWithExactly();
 

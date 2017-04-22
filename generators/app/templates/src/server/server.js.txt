@@ -8,7 +8,7 @@
 
 /* Files */
 
-<% if (compile) { %>export default<% } else { %>const factory =<% } %> (Server, config, <%- deps.lodash.upperFirst(server) %>) => {
+<% if (compile) { %>export default<% } else { %>const factory =<% } %> (Server, config, { <%- deps.lodash.upperFirst(server) %> }) => {
   const <%- server %> = new <%- deps.lodash.upperFirst(server) %>();
 
   const server = new Server(config.server, <%- server %>);
