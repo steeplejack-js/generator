@@ -6,7 +6,7 @@
 
 /* Third-party modules */<% if (compile) { %>
 import bunyanLib from 'bunyan';<% } else { %>
-const bunyan = require('bunyan');<% } %>
+const bunyanLib = require('bunyan');<% } %>
 
 /* Files */<% if (compile) { %>
 import {expect} from '../../helpers/setup';
