@@ -5,12 +5,15 @@
 /* Node modules */
 
 /* Third-party modules */<% if (compile) { %>
-import {Restify} from 'steeplejack-restify';<% } else { %>
-const {Restify} = require('steeplejack-restify');<% } %>
+import {Restify, restifyLib} from 'steeplejack-restify';<% } else { %>
+const {Restify, restifyLib} = require('steeplejack-restify');<% } %>
 
 /* Files */
 
-<% if (compile) { %>export default<% } else { %>const factory =<% } %> () => Restify;
+<% if (compile) { %>export default<% } else { %>const factory =<% } %> () => ({
+  Restify,
+  restifyLib
+})
 <% if (compile) { %>
 export const inject = {
   name: 'Restify'
