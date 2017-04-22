@@ -83,7 +83,6 @@ module.exports = class Steeplejack extends Generator {
       'nyc',
       'proxyquire',
       'sinon',
-      'sinon-as-promised',
       'sinon-chai',
       'supertest'
     ];
