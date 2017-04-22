@@ -19,7 +19,7 @@ const app = server.default || server;
 /* Create a request object with the application injected */
 const request = supertest(app.server.getServer());
 
-export {
+module.exports = {
   expect,
   request
 };
