@@ -4,9 +4,8 @@
 
 /* Node modules */
 
-/* Third-party modules */<% if (compile) { %>
-import {Express, expressLib} from 'steeplejack-express';<% } else { %>
-const {Express, expressLib} = require('steeplejack-express');<% } %>
+/* Third-party modules */
+<%- deps.importer('steeplejack-express', '{Express, expressLib}') %>
 
 /* Files */
 

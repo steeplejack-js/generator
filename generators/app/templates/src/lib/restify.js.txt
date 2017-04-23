@@ -4,9 +4,8 @@
 
 /* Node modules */
 
-/* Third-party modules */<% if (compile) { %>
-import {Restify, restifyLib} from 'steeplejack-restify';<% } else { %>
-const {Restify, restifyLib} = require('steeplejack-restify');<% } %>
+/* Third-party modules */
+<%- deps.importer('steeplejack-restify', '{Restify, restifyLib}') %>
 
 /* Files */
 

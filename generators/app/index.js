@@ -18,6 +18,7 @@ const yosay = require('yosay');
 
 /* Files */
 const exportsFn = require('../../helpers/exports');
+const importsFn = require('../../helpers/imports');
 const validate = require('../../helpers/validation');
 
 module.exports = class Steeplejack extends Generator {
@@ -260,7 +261,8 @@ module.exports = class Steeplejack extends Generator {
     /* Write all the templates to the destination */
     config.deps = {
       lodash: _,
-      exporter: exportsFn(config.compile)
+      exporter: exportsFn(config.compile),
+      importer: importsFn(config.compile)
     };
 
     files.forEach(file => {

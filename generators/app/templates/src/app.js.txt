@@ -10,15 +10,12 @@
 
 /* Node modules */
 
-/* Third-party modules */<% if (compile) { %>
-import Steeplejack from 'steeplejack';<% } else { %>
-const Steeplejack = require('steeplejack');<% } %>
+/* Third-party modules */
+<%- deps.importer('steeplejack', 'Steeplejack') %>
 
-/* Files */<% if (compile) { %>
-import config from './config.json';
-import env from'./envvars.json';<% } else { %>
-const config = require('./config.json');
-const env = require('./envvars.json');<% } %>
+/* Files */
+<%- deps.importer('./config.json', 'config') %>
+<%- deps.importer('./envvars.json', 'env') %>
 
 /* Bootstrap the Steeplejack app */
 const app = Steeplejack.app({
@@ -33,6 +30,5 @@ const app = Steeplejack.app({
 
 /* Load up the server */
 app.run([ 'server' ], server => server);
-<% if (compile) { %>
-export default app;<% } else { %>
-module.exports = app;<% } %>
+
+<%= deps.exporter('default') %> app;

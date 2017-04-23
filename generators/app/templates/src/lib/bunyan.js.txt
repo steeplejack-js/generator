@@ -4,9 +4,8 @@
 
 /* Node modules */
 
-/* Third-party modules */<% if (compile) { %>
-import bunyan from 'bunyan';<% } else { %>
-const bunyan = require('bunyan');<% } %>
+/* Third-party modules */
+<%- deps.importer('bunyan') %>
 
 /* Files */
 
