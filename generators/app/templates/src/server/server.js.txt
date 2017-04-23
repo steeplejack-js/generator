@@ -8,31 +8,19 @@
 
 /* Files */
 
-<% if (compile) { %>export default<% } else { %>const factory =<% } %> (Server, config, { <%- deps.lodash.upperFirst(server) %> }) => {
+<%= deps.exporter('default') %> (Server, config, { <%- deps.lodash.upperFirst(server) %> }) => {
   const <%- server %> = new <%- deps.lodash.upperFirst(server) %>();
 
   const server = new Server(config.server, <%- server %>);
 
   return server;
 };
-<% if (compile) { %>
-export const inject = {
+
+<%= deps.exporter('inject') %> = {
   name: 'server',
   deps: [
     'steeplejack-server',
     '$config',
     '<%- deps.lodash.upperFirst(server) %>'
   ]
-};<% } else { %>
-module.exports = {
-  default: factory,
-  inject: {
-    name: 'server',
-    deps: [
-      'steeplejack-server',
-      '$config',
-      '<%- deps.lodash.upperFirst(server) %>'
-    ]
-  }
 };
-<% } %>

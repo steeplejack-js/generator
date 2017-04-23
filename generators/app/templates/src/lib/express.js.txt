@@ -10,18 +10,11 @@ const {Express, expressLib} = require('steeplejack-express');<% } %>
 
 /* Files */
 
-<% if (compile) { %>export default<% } else { %>const factory =<% } %> () => ({
+<%= deps.exporter('default') %> () => ({
   Express,
   expressLib
-})
-<% if (compile) { %>
-export const inject = {
+});
+
+<%= deps.exporter('inject') %> = {
   name: 'Express'
-};<% } else { %>
-module.exports = {
-  default: factory,
-  inject: {
-    name: 'Express'
-  }
 };
-<% } %>

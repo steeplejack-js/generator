@@ -17,6 +17,7 @@ const walk = require('walk');
 const yosay = require('yosay');
 
 /* Files */
+const exportsFn = require('../../helpers/exports');
 const validate = require('../../helpers/validation');
 
 module.exports = class Steeplejack extends Generator {
@@ -256,9 +257,10 @@ module.exports = class Steeplejack extends Generator {
       }
     });
 
-    /* Write all the templates to the desination */
+    /* Write all the templates to the destination */
     config.deps = {
-      lodash: _
+      lodash: _,
+      exporter: exportsFn(config.compile)
     };
 
     files.forEach(file => {

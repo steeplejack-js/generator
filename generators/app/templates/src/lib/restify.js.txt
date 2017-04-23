@@ -10,18 +10,11 @@ const {Restify, restifyLib} = require('steeplejack-restify');<% } %>
 
 /* Files */
 
-<% if (compile) { %>export default<% } else { %>const factory =<% } %> () => ({
+<%= deps.exporter('default') %> () => ({
   Restify,
   restifyLib
-})
-<% if (compile) { %>
-export const inject = {
+});
+
+<%= deps.exporter('inject') %> = {
   name: 'Restify'
-};<% } else { %>
-module.exports = {
-  default: factory,
-  inject: {
-    name: 'Restify'
-  }
 };
-<% } %>
