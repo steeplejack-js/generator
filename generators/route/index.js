@@ -86,7 +86,7 @@ module.exports = class Steeplejack extends Generator {
             .replace(/\/$/, '');
         }
 
-        return validate.required(formatted)
+        return validate.required(formatted);
       }
     }, {
       type: 'confirm',

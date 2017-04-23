@@ -14,7 +14,6 @@ const program = require('ast-query');
 const factories = {
 
   base (generator, opts) {
-
     opts.deps = opts.deps || {};
     opts.name = path.parse(opts.path).name;
 

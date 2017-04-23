@@ -14,7 +14,7 @@ module.exports = compile => (pkgName, varName = null) => {
   }
 
   if (compile) {
-    return `import ${varName} from '${pkgName}';`
+    return `import ${varName} from '${pkgName}';`;
   }
 
   return `const ${varName} = require('${pkgName}');`;

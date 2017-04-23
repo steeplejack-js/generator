@@ -9,7 +9,6 @@
 /* Files */
 
 module.exports = compile => varName => {
-
   if (varName === 'default') {
     if (compile) {
       return 'export default';

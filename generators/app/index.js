@@ -5,12 +5,10 @@
 'use strict';
 
 /* Node modules */
-const fs = require('fs');
 const path = require('path');
 
 /* Third-party modules */
 const _ = require('lodash');
-const beautify = require('gulp-beautify');
 const Generator = require('yeoman-generator');
 const Inquirer = require('inquirer');
 const walk = require('walk');
