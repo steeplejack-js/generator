@@ -31,7 +31,7 @@ describe('app tests', function () {
       steeplejack: steeplejack,
       './config.json': config,
       './envvars.json': env,
-    })<% if (compile) { %>.default<% } %>;
+    }).default;
 
     expect(app).to.be.equal(steeplejackInst);
 
