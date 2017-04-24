@@ -9,7 +9,7 @@
 /* Third-party modules */
 const beautify = require('gulp-beautify');
 const Generator = require('yeoman-generator');
-// const Router = require('steeplejack/lib/router');
+// const Server = require('steeplejack/lib/server');
 const walk = require('walk');
 const yosay = require('yosay');
 
@@ -17,9 +17,9 @@ const yosay = require('yosay');
 const fileFactory = require('../../helpers/fileFactory');
 const validate = require('../../helpers/validation');
 
-// @todo get from Router
-const Router = {
-  allowableMethods: [
+// @todo get from Server
+const Server = {
+  allowableHTTPMethods: [
     'GET',
     'POST',
     'PUT',
@@ -72,7 +72,7 @@ module.exports = class Steeplejack extends Generator {
       type: 'list',
       name: 'method',
       message: 'HTTP method',
-      choices: Router.allowableMethods
+      choices: Server.allowableHTTPMethods
     }, {
       type: 'input',
       name: 'url',
