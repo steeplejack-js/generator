@@ -9,6 +9,7 @@ const path = require('path');
 
 /* Third-party modules */
 const _ = require('lodash');
+const chalk = require('chalk');
 const Generator = require('yeoman-generator');
 const Inquirer = require('inquirer');
 const walk = require('walk');
@@ -44,7 +45,23 @@ module.exports = class Steeplejack extends Generator {
       '--fix'
     ]);
 
-    return this.log(yosay('All done. Start with "npm run serve"'));
+    const commands = [{
+      command: 'yo steeplejack:route',
+      desc: 'Configure a new route'
+    }, {
+      command: 'npm run serve',
+      desc: 'Run in dev mode'
+    }];
+
+    const endMessage = [
+      'All done. Here\'s some more commands for you to choose from:',
+    ];
+
+    _.each(commands, (opts) => {
+      endMessage.push(`${chalk.underline(opts.command)}\n${opts.desc}`);
+    });
+
+    return this.log(yosay(endMessage.join('\n\n')));
   }
 
   /**

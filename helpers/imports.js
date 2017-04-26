@@ -8,7 +8,7 @@
 
 /* Files */
 
-module.exports = compile => (pkgName, varName = null) => {
+module.exports = compile => (pkgName, varName) => {
   if (!varName) {
     varName = pkgName;
   }
