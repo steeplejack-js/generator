@@ -12,6 +12,7 @@
 
 /* Third-party modules */
 <%- deps.importer('steeplejack', 'Steeplejack') %>
+<%- deps.importer('@steeplejack/' + server, server) %>
 
 /* Files */
 <%- deps.importer('./config.json', 'config') %>
@@ -24,6 +25,7 @@ const app = Steeplejack.app({
   logger: '$logger',
   modules: [
     `${__dirname}/!(node_modules|routes)/**/*.js`,
+    <%- server %>,
   ],
   routesDir: `${__dirname}/routes`
 });

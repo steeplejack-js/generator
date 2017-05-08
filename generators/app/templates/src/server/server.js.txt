@@ -21,6 +21,6 @@
   deps: [
     'steeplejack-server',
     '$config',
-    '<%- deps.lodash.upperFirst(server) %>'
+    'steeplejack-<%- server %>'
   ]
 };

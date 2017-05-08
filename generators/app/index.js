@@ -30,36 +30,46 @@ module.exports = class Steeplejack extends Generator {
    * @returns {*}
    */
   end () {
-    /* Sort out the linting */
-    this.spawnCommandSync('npm', [
+    const endMessage = [];
+
+    const lint = [[
       'run',
       'test:lint:src',
       '--',
       '--fix'
-    ]);
-
-    this.spawnCommandSync('npm', [
+    ], [
       'run',
       'test:lint:test',
       '--',
-      '--fix'
-    ]);
-
-    const commands = [{
-      command: 'yo steeplejack:route',
-      desc: 'Configure a new route'
-    }, {
-      command: 'npm run serve',
-      desc: 'Run in dev mode'
-    }];
-
-    const endMessage = [
-      'All done. Here\'s some more commands for you to choose from:',
+      '--fix']
     ];
 
-    _.each(commands, (opts) => {
-      endMessage.push(`${chalk.underline(opts.command)}\n${opts.desc}`);
-    });
+    if (this.options.skipInstall) {
+      endMessage.push('As you ran with --skip-install, the linting hasn\'t been fixed');
+      endMessage.push('Run the following commands to fix this:');
+      lint.forEach(cmd => {
+        endMessage.push(`$ npm ${cmd.join(' ')}`);
+      });
+    } else {
+      /* Sort out the linting */
+      lint.forEach(cmd => {
+        this.spawnCommandSync('npm', cmd);
+      });
+
+      const commands = [{
+        command: 'yo steeplejack:route',
+        desc: 'Configure a new route'
+      }, {
+        command: 'npm run serve',
+        desc: 'Run in dev mode'
+      }];
+
+      endMessage.push('All done. Here\'s some more commands for you to choose from:');
+
+      _.each(commands, (opts) => {
+        endMessage.push(`${chalk.underline(opts.command)}\n${opts.desc}`);
+      });
+    }
 
     return this.log(yosay(endMessage.join('\n\n')));
   }
@@ -88,7 +98,7 @@ module.exports = class Steeplejack extends Generator {
       'bunyan',
       'steeplejack',
       config.server,
-      `steeplejack-${config.server}`
+      `@steeplejack/${config.server}`
     ];
 
     const devDeps = [
@@ -120,12 +130,12 @@ module.exports = class Steeplejack extends Generator {
         break;
 
       case 'airbnb':
-        devDeps.push('eslint');
+        devDeps.push('eslint@^3.15.0');
         devDeps.push('eslint-config-airbnb');
         devDeps.push('eslint-plugin-classes');
-        devDeps.push('eslint-plugin-import');
-        devDeps.push('eslint-plugin-jsx-a11y');
-        devDeps.push('eslint-plugin-react');
+        devDeps.push('eslint-plugin-import@^2.2.0');
+        devDeps.push('eslint-plugin-jsx-a11y@^4.0.0');
+        devDeps.push('eslint-plugin-react@^6.9.0');
         if (config.compile) {
           devDeps.push('babel-eslint');
         }
@@ -250,14 +260,6 @@ module.exports = class Steeplejack extends Generator {
 
     if (!config.compile) {
       ignore.push('.babelrc');
-    }
-
-    if (config.server === 'express') {
-      ignore.push('src/lib/restify.js');
-      ignore.push('test/unit/lib/restify.test.js');
-    } else if (config.server === 'restify') {
-      ignore.push('src/lib/express.js');
-      ignore.push('test/unit/lib/express.test.js');
     }
 
     walk.walkSync(this.templatePath(), {

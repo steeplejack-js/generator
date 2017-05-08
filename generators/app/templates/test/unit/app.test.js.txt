@@ -5,6 +5,7 @@
 /* Node modules */
 
 /* Third-party modules */
+<%- deps.importer('@steeplejack/' + server, server) %>
 
 /* Files */<% if (compile) { %>
 import { expect, proxyquire, sinon } from '../helpers/setup';<% } else { %>
@@ -42,6 +43,7 @@ describe('app tests', function () {
         logger: '$logger',
         modules: [
           `${process.cwd()}/src/!(node_modules|routes)/**/*.js`,
+          <%- server %>,
         ],
         routesDir: `${process.cwd()}/src/routes`,
       });
