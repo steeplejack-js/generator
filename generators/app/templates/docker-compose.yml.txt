@@ -10,4 +10,4 @@ services:
       - '9999:9999'
     volumes:
       - .:/opt/app
-    command: npm run serve | ./node_modules/.bin/bunyanA
+    command: npm run serve
