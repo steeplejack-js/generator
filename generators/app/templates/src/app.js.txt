@@ -12,7 +12,8 @@
 
 /* Third-party modules */
 <%- deps.importer('steeplejack', 'Steeplejack') %>
-<%- deps.importer('@steeplejack/' + server, server) %>
+<%- deps.importer('@steeplejack/' + server, server) %><% if (sockets) { %>
+<%- deps.importer('@steeplejack/socketio', 'socketio') %><% } %>
 
 /* Files */
 <%- deps.importer('./config.json', 'config') %>
@@ -25,7 +26,8 @@ const app = Steeplejack.app({
   logger: '$logger',
   modules: [
     `${__dirname}/!(node_modules|routes)/**/*.js`,
-    <%- server %>,
+    <%- server %>,<% if (sockets) { %>
+    socketio,<% } %>
   ],
   routesDir: `${__dirname}/routes`
 });

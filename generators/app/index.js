@@ -214,6 +214,11 @@ module.exports = class Steeplejack extends Generator {
       ],
       default: this.config.get('server')
     }, {
+      type: 'confirm',
+      name: 'sockets',
+      message: 'Do you want web sockets?',
+      default: this.config.get('sockets') === undefined ? false : this.config.get('sockets') !== false
+    }, {
       type: 'input',
       name: 'envvarPrefix',
       message: 'Environment variable prefix [<none> for no prefix]',

@@ -26,7 +26,8 @@ describe('server tests', function () {
         deps: [
           'steeplejack-server',
           '$config',
-          'steeplejack-<%- server %>'
+          'steeplejack-<%- server %>',<% if (sockets) { %>
+          'steeplejack-socketio',<% } %>
         ]
       });
 
@@ -45,25 +46,35 @@ describe('server tests', function () {
       this.serverLib = {
         <%- deps.lodash.upperFirst(server) %>: sinon.stub()
           .returns(this.<%- server %>Inst)
-      };
+      };<% if (sockets) { %>
+
+      this.socketInst = {};
+      this.socketLib = {
+        SocketIO: sinon.stub()
+          .returns(this.socketInst)
+      };<% } %>
 
       this.serverInst = {};
       this.Server = sinon.stub()
         .returns(this.serverInst);
     });
 
-    it('should create a server and configure <%- deps.lodash.upperFirst(server) %> as the strategy', function () {
-      const obj = server(this.Server, this.config, this.serverLib);
+    it('should create a server and configure <%- deps.lodash.upperFirst(server) %><% if (sockets) { %> with SocketIO<% } %> as the strategy', function () {
+      const obj = server(this.Server, this.config, this.serverLib<% if (sockets) { %>, this.socketLib<% } %>);
 
       expect(obj).to.be.equal(this.serverInst);
 
       expect(this.serverLib.<%- deps.lodash.upperFirst(server) %>).to.be.calledOnce
         .calledWithNew
-        .calledWithExactly();
+        .calledWithExactly();<% if (sockets) { %>
+
+      expect(this.socketLib.SocketIO).to.be.calledOnce
+        .calledWithNew
+        .calledWithExactly();<% } %>
 
       expect(this.Server).to.be.calledOnce
         .calledWithNew
-        .calledWithExactly('serverConfig', this.<%- server %>Inst);
+        .calledWithExactly('serverConfig', this.<%- server %>Inst<% if (sockets) { %>, this.socketInst<% } %>);
     });
 
   });

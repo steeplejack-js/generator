@@ -8,10 +8,11 @@
 
 /* Files */
 
-<%= deps.exporter('default') %> (Server, config, { <%- deps.lodash.upperFirst(server) %> }) => {
-  const <%- server %> = new <%- deps.lodash.upperFirst(server) %>();
+<%= deps.exporter('default') %> (Server, config, { <%- deps.lodash.upperFirst(server) %> }<% if (sockets) { %>, { SocketIO }<% } %>) => {
+  const <%- server %> = new <%- deps.lodash.upperFirst(server) %>();<% if (sockets) { %>
+  const socketIo = new SocketIO();<% } %>
 
-  const server = new Server(config.server, <%- server %>);
+  const server = new Server(config.server, <%- server %><% if (sockets) { %>, socketIo<% } %>);
 
   return server;
 };
@@ -21,6 +22,7 @@
   deps: [
     'steeplejack-server',
     '$config',
-    'steeplejack-<%- server %>'
+    'steeplejack-<%- server %>',<% if (sockets) { %>
+    'steeplejack-socketio',<% } %>
   ]
 };

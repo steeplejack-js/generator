@@ -5,7 +5,8 @@
 /* Node modules */
 
 /* Third-party modules */
-<%- deps.importer('@steeplejack/' + server, server) %>
+<%- deps.importer('@steeplejack/' + server, server) %><% if (sockets) { %>
+<%- deps.importer('@steeplejack/socketio', 'socketio') %><% } %>
 
 /* Files */<% if (compile) { %>
 import { expect, proxyquire, sinon } from '../helpers/setup';<% } else { %>
@@ -43,7 +44,8 @@ describe('app tests', function () {
         logger: '$logger',
         modules: [
           `${process.cwd()}/src/!(node_modules|routes)/**/*.js`,
-          <%- server %>,
+          <%- server %>,<% if (sockets) { %>
+          socketio,<% } %>
         ],
         routesDir: `${process.cwd()}/src/routes`,
       });
