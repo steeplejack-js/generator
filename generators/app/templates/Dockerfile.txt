@@ -7,13 +7,11 @@
 
 FROM node:6-alpine
 
-MAINTAINER <%- author %>
+LABEL maintainer "<%- author %>"
 
 # Set the work directory and add the project files to it
 WORKDIR /opt/app
 ADD . /opt/app
-
-USER node
 
 # Environment variables
 ENV <%- envvarPrefix %>LOGGING_STREAMS_STDOUT_ACTIVE=true
@@ -23,9 +21,11 @@ ENV <%- envvarPrefix %>SERVER_PORT=9999
 
 # Install the dependencies
 
-# Expose the port
-EXPOSE 9999
-EXPOSE 5858
+# Expose the ports
+EXPOSE 9999 5858
+
+# Set the user as host's current user
+USER node
 
 # Run run run
-CMD npm start | ./node_modules/.bin/bunyan
+CMD npm start
