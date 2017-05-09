@@ -101,6 +101,11 @@ module.exports = class Steeplejack extends Generator {
       `@steeplejack/${config.server}`
     ];
 
+    if (config.sockets) {
+      deps.push('socket.io');
+      deps.push('@steeplejack/socketio');
+    }
+
     const devDeps = [
       'chai',
       'chai-as-promised',
