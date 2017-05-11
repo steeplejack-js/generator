@@ -8,9 +8,9 @@
 
 /* Files */
 
-exports.default = ({ Restify }) => new Restify();
+<%= deps.exporter('default') %> ({ Restify }) => new Restify();
 
-exports.inject = {
+<%= deps.exporter('inject') %> = {
   name: 'restify',
   deps: [
     'steeplejack-restify',

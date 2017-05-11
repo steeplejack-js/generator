@@ -8,7 +8,7 @@
 
 /* Files */
 
-exports.default = (Server, config, <%= server %>) =>
+<%= deps.exporter('default') %> (Server, config, <%= server %>) =>
   new Server(config.server, <%= server %><% if (sockets) { %>, socketIo<% } %>);
 
 <%= deps.exporter('inject') %> = {

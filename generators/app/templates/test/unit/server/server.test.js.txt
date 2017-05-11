@@ -1,5 +1,5 @@
 /**
- * <%- server %>.test.js
+ * server.test.js
  */
 
 /* Node modules */
@@ -26,7 +26,7 @@ describe('server tests', function () {
         deps: [
           'steeplejack-server',
           '$config',
-          'steeplejack-<%- server %>',<% if (sockets) { %>
+          '<%- server %>',<% if (sockets) { %>
           'steeplejack-socketio',<% } %>
         ]
       });
@@ -42,11 +42,7 @@ describe('server tests', function () {
         server: 'serverConfig'
       };
 
-      this.<%- server %>Inst = {};
-      this.serverLib = {
-        <%- deps.lodash.upperFirst(server) %>: sinon.stub()
-          .returns(this.<%- server %>Inst)
-      };<% if (sockets) { %>
+      this.<%- server %>Inst = {};<% if (sockets) { %>
 
       this.socketInst = {};
       this.socketLib = {
@@ -60,13 +56,9 @@ describe('server tests', function () {
     });
 
     it('should create a server and configure <%- deps.lodash.upperFirst(server) %><% if (sockets) { %> with SocketIO<% } %> as the strategy', function () {
-      const obj = server(this.Server, this.config, this.serverLib<% if (sockets) { %>, this.socketLib<% } %>);
+      const obj = server(this.Server, this.config, this.<%- server %>Inst<% if (sockets) { %>, this.socketLib<% } %>);
 
-      expect(obj).to.be.equal(this.serverInst);
-
-      expect(this.serverLib.<%- deps.lodash.upperFirst(server) %>).to.be.calledOnce
-        .calledWithNew
-        .calledWithExactly();<% if (sockets) { %>
+      expect(obj).to.be.equal(this.serverInst);<% if (sockets) { %>
 
       expect(this.socketLib.SocketIO).to.be.calledOnce
         .calledWithNew

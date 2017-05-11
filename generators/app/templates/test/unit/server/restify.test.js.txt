@@ -1,0 +1,64 @@
+/**
+ * restify.test.js
+ */
+
+/* Node modules */
+const path = require('path');
+
+/* Third-party modules */
+
+/* Files */
+const { expect, sinon } = require('../../helpers/setup');
+const factory = require('../../../src/server/restify');
+
+const server = factory.default;
+const inject = factory.inject;
+
+describe('restify tests', function () {
+
+  describe('#inject', function () {
+
+    it('should define the injector', function () {
+
+      expect(inject).to.be.eql({
+        name: 'restify',
+        deps: [
+          'steeplejack-restify',
+        ],
+      });
+
+    });
+
+  });
+
+  describe('#factory', function () {
+
+    beforeEach(function () {
+      this.config = {
+        server: 'serverConfig',
+      };
+
+      this.restifyInst = {
+      };
+
+      this.restify = {
+        Restify: sinon.stub()
+          .returns(this.restifyInst)
+        },
+      };
+    });
+
+    it('should configure Restify', function () {
+      const obj = server(this.restify);
+
+      expect(obj).to.be.equal(this.restifyInst);
+
+      expect(this.restify.Restify).to.be.calledOnce
+        .calledWithNew
+        .calledWithExactly();
+
+    });
+
+  });
+
+});

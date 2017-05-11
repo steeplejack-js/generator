@@ -289,8 +289,14 @@ module.exports = class Steeplejack extends Generator {
 
     if (config.server === 'restify') {
       ignore.push('src/server/express.js');
+      ignore.push('src/public/*');
+      ignore.push('src/scripts/*');
+      ignore.push('src/styles/*');
+      ignore.push('src/views/*');
+      ignore.push('test/unit/server/express.test.js');
     } else if (config.server === 'express') {
       ignore.push('src/server/restify.js');
+      ignore.push('test/unit/server/restify.test.js');
     }
 
     if (!config.compile && config.server !== 'express') {

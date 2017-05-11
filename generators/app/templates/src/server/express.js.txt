@@ -3,22 +3,23 @@
  */
 
 /* Node modules */
+<%- deps.importer('path') %>
 
 /* Third-party modules */
 
 /* Files */
 
-exports.default = ({ Express, expressLib }) => {
+<%= deps.exporter('default') %> ({ Express, expressLib }) => {
   const express = new Express();
 
   express.set('view engine', 'pug')
-    .set('views', `${__dirname}/../views`)
-    .use('/', expressLib.static(`${__dirname}/../public`));
+    .set('views', path.join(process.cwd(), 'src', 'views'))
+    .use('/', expressLib.static(path.join(process.cwd(), 'src', 'public')));
 
   return express;
 };
 
-exports.inject = {
+<%= deps.exporter('inject') %> = {
   name: 'express',
   deps: [
     'steeplejack-express',
