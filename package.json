@@ -36,6 +36,7 @@
     "yosay": "^1.2.1"
   },
   "devDependencies": {
+    "ejs-lint": "^0.3.0",
     "semistandard": "^9.2.1"
   }
 }

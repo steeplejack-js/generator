@@ -119,6 +119,20 @@ module.exports = class Steeplejack extends Generator {
       'supertest'
     ];
 
+    if (config.server === 'express') {
+      deps.push('pug');
+
+      devDeps.push('autoprefixer');
+      devDeps.push('babel-preset-env');
+      devDeps.push('babelify');
+      devDeps.push('browser-sync');
+      devDeps.push('browserify');
+      devDeps.push('browserify-derequire');
+      devDeps.push('minifyify');
+      devDeps.push('node-sass');
+      devDeps.push('postcss-cli');
+    }
+
     if (config.compile) {
       deps.push('source-map-support');
 
@@ -212,11 +226,16 @@ module.exports = class Steeplejack extends Generator {
     }, {
       type: 'list',
       name: 'server',
-      message: 'Server framework',
-      choices: [
-        'express',
-        'restify'
-      ],
+      message: 'What do you want to build?',
+      choices: [{
+        name: 'A full-stack app',
+        short: 'Express',
+        value: 'express',
+      }, {
+        name: 'An API only',
+        short: 'Restify',
+        value: 'restify',
+      }],
       default: this.config.get('server')
     }, {
       type: 'confirm',
@@ -268,7 +287,13 @@ module.exports = class Steeplejack extends Generator {
       ignore.push('test/.eslintrc');
     }
 
-    if (!config.compile) {
+    if (config.server === 'restify') {
+      ignore.push('src/server/express.js');
+    } else if (config.server === 'express') {
+      ignore.push('src/server/restify.js');
+    }
+
+    if (!config.compile && config.server !== 'express') {
       ignore.push('.babelrc');
     }
 

@@ -25,7 +25,7 @@ const app = Steeplejack.app({
   env,
   logger: '$logger',
   modules: [
-    `${__dirname}/!(node_modules|routes)/**/*.js`,
+    `${__dirname}/!(node_modules|public|routes|scripts|styles)/**/*.js`,
     <%- server %>,<% if (sockets) { %>
     socketio,<% } %>
   ],

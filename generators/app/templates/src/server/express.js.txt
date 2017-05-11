@@ -1,0 +1,26 @@
+/**
+ * express
+ */
+
+/* Node modules */
+
+/* Third-party modules */
+
+/* Files */
+
+exports.default = ({ Express, expressLib }) => {
+  const express = new Express();
+
+  express.set('view engine', 'pug')
+    .set('views', `${__dirname}/../views`)
+    .use('/', expressLib.static(`${__dirname}/../public`));
+
+  return express;
+};
+
+exports.inject = {
+  name: 'express',
+  deps: [
+    'steeplejack-express',
+  ],
+};

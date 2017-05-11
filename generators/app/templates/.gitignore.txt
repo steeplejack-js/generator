@@ -41,3 +41,6 @@ jspm_packages
 .DS_Store
 build
 dist
+
+src/public/assets/styles
+src/public/assets/scripts

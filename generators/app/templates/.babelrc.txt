@@ -1,8 +1,15 @@
 {
-  "presets": [
-    "latest"
-  ],
   "env": {
+    "scripts": {
+      "presets": [
+        "env"
+      ]
+    },<% if (compile) { %>
+    "server": {
+      "presets": [
+        "latest"
+      ]
+    },<% } %>
     "test": {
       "plugins": [
         "istanbul"
