@@ -19,7 +19,7 @@ const factories = {
 
     if (!generator.fs.exists(opts.path)) {
       /* Create the base file */
-      const dest = generator.templatePath('../../../templates/base.txt');
+      const dest = generator.templatePath('../../../templates/base.ejs');
 
       generator.fs.copyTpl(dest, opts.path, opts);
     }

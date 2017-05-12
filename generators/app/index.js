@@ -324,12 +324,12 @@ module.exports = class Steeplejack extends Generator {
     };
 
     files.forEach(file => {
-      const dst = file.replace(/\.txt$/, '');
+      const dst = file.replace(/\.ejs$/, '');
 
       if (ignore.indexOf(dst) === -1) {
         const template = this.templatePath(file);
 
-        /* Remove any .txt ending */
+        /* Remove any .ejs ending */
         const destination = this.destinationPath(dst);
 
         this.fs.copyTpl(template, destination, config);
