@@ -5,9 +5,10 @@ services:
   app:
     build:
       context: .
-    ports:
-      - '5858:5858'
-      - '9999:9999'
+    ports:<% if (server === 'express') { %>
+      - '3000-3100'<% } %>
+      - '5858'
+      - '9999'
     volumes:
       - .:/opt/app
     command: npm run serve
