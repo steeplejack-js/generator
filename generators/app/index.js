@@ -326,7 +326,21 @@ module.exports = class Steeplejack extends Generator {
     files.forEach(file => {
       const dst = file.replace(/\.ejs$/, '');
 
-      if (ignore.indexOf(dst) === -1) {
+      const isIgnored = ignore.find(filePath => {
+        if (dst === filePath) {
+          return true;
+        } else if (/\*$/.test(filePath)) {
+          filePath = filePath.replace('*', '');
+
+          const re = new RegExp(`^${filePath}`);
+
+          return re.test(dst);
+        }
+
+        return false;
+      });
+
+      if (!isIgnored) {
         const template = this.templatePath(file);
 
         /* Remove any .ejs ending */

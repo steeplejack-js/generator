@@ -10,7 +10,10 @@
         "latest"
       ]
     },<% } %>
-    "test": {
+    "test": {<% if (compile) { %>
+      "presets": [
+        "latest"
+      ],<% } %>
       "plugins": [
         "istanbul"
       ]
