@@ -44,7 +44,7 @@
     "postversion": "git push --tags && git push",
     "serve": "npm run clean && npm run serve:server -s<% if (server === 'express') { %> & npm run serve:scripts -s & npm run serve:styles -s & npm run serve:browsersync -s<% } %>",<% if (server === 'express') { %>
     "serve:browsersync": "browser-sync start --proxy=localhost:9999 --ws --open=local --files='./src/public/**/*.css,./src/public/**/*.js,./src/views'",<% } %>
-    "serve:server": "<% if (compile) { %>cross-env NODE_ENV=server <% } %>nodemon<% if (compile) { %> --exec babel-node<% } %> --debug=5858 --legacy-watch --ignore ./src/public ./src/app.js | bunyan",<% if (server === 'express') { %>
+    "serve:server": "<% if (compile) { %>cross-env NODE_ENV=server <% } %>nodemon<% if (compile) { %> --exec babel-node<% } %> --inspect=5858 --legacy-watch --ignore ./src/public ./src/app.js | bunyan",<% if (server === 'express') { %>
     "serve:scripts": "nodemon --legacy-watch --ignore ./src/public --exec 'npm run compile:scripts -s'",
     "serve:styles": "nodemon --legacy-watch --ignore ./src/public --ext scss --exec 'npm run compile:styles -s'",<% } %>
     "start": "node<% if (compile) { %> --require source-map-support/register<% } %> ./",
