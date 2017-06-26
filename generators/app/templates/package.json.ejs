@@ -2,7 +2,7 @@
   "name": "<%- name %>",
   "version": "0.0.0",
   "description": "<%- description %>",
-  "main": "./app",
+  "main": "./<% if (!compile) { %>src/<% } %>app",
   "nyc": {
     "all": true,
     "check-coverage": true,
