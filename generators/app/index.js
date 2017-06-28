@@ -149,12 +149,12 @@ module.exports = class Steeplejack extends Generator {
         break;
 
       case 'airbnb':
-        devDeps.push('eslint');
-        devDeps.push('eslint-config-airbnb');
+        devDeps.push('eslint@^3.15.0');
+        devDeps.push('eslint-config-airbnb@^15.0.0');
         devDeps.push('eslint-plugin-classes');
-        devDeps.push('eslint-plugin-import');
-        devDeps.push('eslint-plugin-jsx-a11y');
-        devDeps.push('eslint-plugin-react');
+        devDeps.push('eslint-plugin-import@^2.3.0');
+        devDeps.push('eslint-plugin-jsx-a11y@^5.0.0');
+        devDeps.push('eslint-plugin-react@^7.0.0');
         if (config.compile) {
           devDeps.push('babel-eslint');
         }
