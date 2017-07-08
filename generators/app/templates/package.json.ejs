@@ -69,6 +69,41 @@
     "watch:test:unit": "mkdir -p build; nodemon --ignore './build' --exec 'npm run test:unit -s' --legacy-watch"
   },
   "author": "<%- author %>",
-  "dependencies": {},
-  "devDependencies": {}
+  "dependencies": {
+    "@steeplejack/data": "^1.0.1",<% if (server === 'express') { %>
+    "@steeplejack/express": "^1.0.1",<% } %><% if (server === 'restify') { %>
+    "@steeplejack/restify": "^0.1.0",<% } %><% if (sockets) { %>
+    "@steeplejack/socketio": "^0.1.0",<% } %>
+    "bunyan": "^1.8.10",<% if (server === 'express') { %>
+    "express": "^4.15.3",<% } %><% if (server === 'express') { %>
+    "pug": "^2.0.0-rc.2",<% } %><% if (server === 'restify') { %>
+    "restify": "^5.0.0",<% } %><% if (sockets) { %>
+    "socket.io": "^2.0.3",<% } %><% if (compile) { %>
+    "source-map-support": "^0.4.15",<% } %>
+    "steeplejack": "^3.0.1"
+  },
+  "devDependencies": {<% if (compile) { %>
+    "babel-cli": "^6.24.1",<% } %><% if (compile && lint === 'airbnb') { %>
+    "babel-eslint": "^7.2.3",<% } %><% if (compile) { %>
+    "babel-plugin-istanbul": "^4.1.4",<% } %><% if (compile) { %>
+    "babel-preset-latest": "^6.24.1",<% } %>
+    "chai": "^4.0.2",
+    "chai-as-promised": "^7.1.1",
+    "cross-env": "^5.0.1",<% if (lint === 'airbnb') { %>
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb": "^15.0.2",
+    "eslint-plugin-classes": "^0.1.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-react": "^7.1.0",<% } %>
+    "mocha": "^3.4.2",
+    "nodemon": "^1.11.0",
+    "nyc": "^11.0.3",
+    "proxyquire": "^1.8.0",<% if (lint === 'semistandard') { %>
+    "semistandard": "^11.0.0",<% } %>
+    "sinon": "^2.3.6",
+    "sinon-chai": "^2.11.0",<% if (lint === 'standard') { %>
+    "standard": "^10.0.2",<% } %>
+    "supertest": "^3.0.0"
+  }
 }
