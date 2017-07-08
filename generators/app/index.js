@@ -91,6 +91,81 @@ module.exports = class Steeplejack extends Generator {
    * Install the dependencies
    */
   install () {
+    const config = this.config.getAll();
+
+    const deps = [
+      '@steeplejack/data',
+      'bunyan',
+      'steeplejack',
+      config.server,
+      `@steeplejack/${config.server}`
+    ];
+
+    if (config.sockets) {
+      deps.push('socket.io');
+      deps.push('@steeplejack/socketio');
+    }
+
+    const devDeps = [
+      'chai',
+      'chai-as-promised',
+      'cross-env',
+      'mocha',
+      'nodemon',
+      'nyc',
+      'proxyquire',
+      'sinon',
+      'sinon-chai',
+      'supertest'
+    ];
+
+    if (config.server === 'express') {
+      deps.push('pug');
+
+      devDeps.push('autoprefixer');
+      devDeps.push('babel-preset-env');
+      devDeps.push('babelify');
+      devDeps.push('browser-sync');
+      devDeps.push('browserify');
+      devDeps.push('browserify-derequire');
+      devDeps.push('minifyify');
+      devDeps.push('node-sass');
+      devDeps.push('postcss-cli');
+    }
+
+    if (config.compile) {
+      deps.push('source-map-support');
+
+      devDeps.push('babel-cli');
+      devDeps.push('babel-plugin-istanbul');
+      devDeps.push('babel-preset-latest');
+    }
+
+    switch (config.lint) {
+
+      case 'standard':
+      case 'semistandard':
+        devDeps.push(config.lint);
+        break;
+
+      case 'airbnb':
+        devDeps.push('eslint@^3.15.0');
+        devDeps.push('eslint-config-airbnb@^15.0.0');
+        devDeps.push('eslint-plugin-classes');
+        devDeps.push('eslint-plugin-import@^2.3.0');
+        devDeps.push('eslint-plugin-jsx-a11y@^5.0.0');
+        devDeps.push('eslint-plugin-react@^7.0.0');
+        if (config.compile) {
+          devDeps.push('babel-eslint');
+        }
+        break;
+
+      default:
+        /* No linting */
+        break;
+
+    }
+
     this.npmInstall();
   }
 
