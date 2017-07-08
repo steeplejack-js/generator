@@ -230,11 +230,11 @@ module.exports = class Steeplejack extends Generator {
       choices: [{
         name: 'A full-stack app',
         short: 'Express',
-        value: 'express',
+        value: 'express'
       }, {
         name: 'An API only',
         short: 'Restify',
-        value: 'restify',
+        value: 'restify'
       }],
       default: this.config.get('server')
     }, {

@@ -4,7 +4,8 @@
   "description": "Yeoman generator for creating Steeplejack apps",
   "main": "index.js",
   "scripts": {
-    "test": "semistandard"
+    "test": "npm run -s test:lint",
+    "test:lint": "semistandard"
   },
   "repository": {
     "type": "git",
