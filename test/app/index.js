@@ -40,7 +40,6 @@ const runner = (cwd, cmd, timeout = null) => new Promise((resolve, reject) => {
       resolve();
     }, timeout);
   } else {
-
     setTimeout(() => {
       runningProcess.kill();
       reject(new Error('Exceeded runner timeout'));
