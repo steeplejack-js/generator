@@ -47,7 +47,6 @@ function factory (stackName, prompts) {
             },
             timeout: 5000
           }))
-          .then(() => runner(stackName, dir, 'killall node'))
           .then(() => log(stackName, 'Completed successfully'));
       })
       .catch(err => {
