@@ -34,7 +34,11 @@ function factory (stackName, prompts) {
           .then(dir => runner(stackName, dir, 'npm run serve', 5000))
           .then(dir => log(stackName, 'Completed successfully'));
       })
-      .catch(err => log(stackName, err));
+      .catch(err => {
+        log(stackName, err);
+
+        process.exit(1);
+      });
   };
 }
 
@@ -135,5 +139,5 @@ apps.reduce((thenable, app) => thenable
   .catch(err => {
     console.log('GENERAL EXCEPTION');
     console.log(err);
-    process.exit(1);
+    process.exit(999);
   });
