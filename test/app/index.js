@@ -15,16 +15,12 @@ const helpers = require('yeoman-test');
 
 const baseDir = path.resolve(__dirname, '..', '..');
 
-let startPort = 9000;
-
 function factory (stackName, prompts) {
   return () => {
     log(stackName, `Building new application: ${JSON.stringify(prompts, null, 2)}`);
 
     /* Change CWD - this changes after each running */
     process.chdir(baseDir);
-
-    const envvarPrefix = prompts.envvarPrefix;
 
     return helpers
       .run(path.join(process.cwd(), 'generators', 'app'))
@@ -41,12 +37,9 @@ function factory (stackName, prompts) {
             allowFail: true
           }))
           .then(() => runner(stackName, dir, 'npm run ci'))
-          .then(() => runner(stackName, dir, 'npm run serve', {
-            env: {
-              [`${envvarPrefix}SERVER_PORT`]: startPort++
-            },
-            timeout: 5000
-          }))
+          // .then(() => runner(stackName, dir, 'npm run serve', {
+          //   timeout: 5000
+          // }))
           .then(() => log(stackName, 'Completed successfully'));
       })
       .catch(err => {
