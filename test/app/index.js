@@ -5,7 +5,7 @@
 'use strict';
 
 /* Node modules */
-const { spawn } = require('child_process');
+const spawn = require('child_process').spawn;
 const path = require('path');
 
 /* Third-party modules */
@@ -46,7 +46,7 @@ function log (stack, message) {
   console.log(`[${stack}] ${message}`);
 }
 
-function runner (stack, cwd, cmd, timeout = null) {
+function runner (stack, cwd, cmd, timeout) {
   return new Promise((resolve, reject) => {
     log(stack, `Running script: ${cmd}`);
 
