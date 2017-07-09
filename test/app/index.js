@@ -68,12 +68,12 @@ function runner (stack, cwd, cmd, timeout) {
 
     if (timeout) {
       setTimeout(() => {
-        runningProcess.kill();
+        runningProcess.kill('SIGINT');
         resolve();
       }, timeout);
     } else {
       setTimeout(() => {
-        runningProcess.kill();
+        runningProcess.kill('SIGINT');
         reject(new Error('Exceeded runner timeout'));
       }, 300000);
 
