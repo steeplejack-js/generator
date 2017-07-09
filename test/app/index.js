@@ -30,9 +30,9 @@ function factory (stackName, prompts) {
 
         /* Run npm install */
         return runner(stackName, dir, 'npm install')
-          .then(dir => runner(stackName, dir, 'npm run ci'))
-          .then(dir => runner(stackName, dir, 'npm run serve', 5000))
-          .then(dir => log(stackName, 'Completed successfully'));
+          .then(() => runner(stackName, dir, 'npm run ci'))
+          .then(() => runner(stackName, dir, 'npm run serve', 5000))
+          .then(() => log(stackName, 'Completed successfully'));
       })
       .catch(err => {
         log(stackName, err);
