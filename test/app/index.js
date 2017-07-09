@@ -13,18 +13,27 @@ const helpers = require('yeoman-test');
 
 /* Files */
 
+const baseDir = path.resolve(__dirname, '..', '..');
+
 function factory (stackName, prompts) {
   return () => {
     log(stackName, `Building new application: ${JSON.stringify(prompts, null, 2)}`);
 
+    /* Change CWD - this changes after each running */
+    process.chdir(baseDir);
+
     return helpers
       .run(path.join(process.cwd(), 'generators', 'app'))
       .withPrompts(prompts)
-      /* Run npm install */
-      .then(dir => runner(stackName, dir, 'npm install')
-        .then(dir => runner(stackName, dir, 'npm run ci'))
-        .then(dir => runner(stackName, dir, 'npm run serve', 5000))
-        .then(dir => log(stackName, 'Completed successfully')))
+      .then(dir => {
+        log(stackName, dir);
+
+        /* Run npm install */
+        return runner(stackName, dir, 'npm install')
+          .then(dir => runner(stackName, dir, 'npm run ci'))
+          .then(dir => runner(stackName, dir, 'npm run serve', 5000))
+          .then(dir => log(stackName, 'Completed successfully'));
+      })
       .catch(err => log(stackName, err));
   };
 }
