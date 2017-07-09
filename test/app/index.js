@@ -54,7 +54,7 @@ function log (stack, message) {
   console.log(`[${stack}] ${message}`);
 }
 
-function runner (stack, cwd, cmd, { allowFail = false, env = {}, timeout = null } = {}) {
+function runner (stack, cwd, cmd, { allowFail = false, env = undefined, timeout = null } = {}) {
   return new Promise((resolve, reject) => {
     log(stack, `Running script: ${cmd}`);
 
