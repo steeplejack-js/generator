@@ -1,0 +1,18 @@
+/**
+ * socketio
+ */
+
+/* Node modules */
+
+/* Third-party modules */
+
+/* Files */
+
+<%= deps.exporter('default') %> ({ SocketIO }) => new SocketIO();
+
+<%= deps.exporter('inject') %> = {
+  name: 'socketio',
+  deps: [
+    'steeplejack-socketio'
+  ]
+};

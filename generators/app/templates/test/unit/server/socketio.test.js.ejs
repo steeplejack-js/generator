@@ -1,0 +1,52 @@
+/**
+ * socketio.test.js
+ */
+
+/* Node modules */
+
+/* Third-party modules */
+
+/* Files */
+<%- deps.importer('../../helpers/setup', '{expect, sinon}') %>
+<%- deps.importer('../../../src/server/socketio', 'socketio, {inject}') %>
+
+describe('socketio tests', function () {
+
+  describe('#inject', function () {
+
+    it('should define the injector', function () {
+
+      expect(inject).to.be.eql({
+        name: 'socketio',
+        deps: [
+          'steeplejack-socketio'
+        ]
+      });
+
+    });
+
+  });
+
+  describe('#factory', function () {
+
+    beforeEach(function () {
+      this.socketInst = {};
+      this.socketLib = {
+        SocketIO: sinon.stub()
+          .returns(this.socketInst)
+      };
+    });
+
+    it('should create a SocketIO instance', function () {
+      const obj = socketio(this.socketLib);
+
+      expect(obj).to.be.equal(this.socketInst);
+
+      expect(this.socketLib.SocketIO).to.be.calledOnce
+        .calledWithNew
+        .calledWithExactly();
+    });
+
+  });
+
+});

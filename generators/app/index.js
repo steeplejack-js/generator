@@ -218,6 +218,11 @@ module.exports = class Steeplejack extends Generator {
       ignore.push('test/unit/server/restify.test.js');
     }
 
+    if (!config.sockets) {
+      ignore.push('src/server/socketio.js');
+      ignore.push('test/unit/server/socketio.test.js');
+    }
+
     if (!config.compile && config.server !== 'express') {
       ignore.push('.babelrc');
     }

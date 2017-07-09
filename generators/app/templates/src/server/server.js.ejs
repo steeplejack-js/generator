@@ -8,7 +8,7 @@
 
 /* Files */
 
-<%= deps.exporter('default') %> (Server, config, <%= server %>) =>
+<%= deps.exporter('default') %> (Server, config, <%= server %><% if (sockets) { %>, socketIo<% } %>) =>
   new Server(config.server, <%= server %><% if (sockets) { %>, socketIo<% } %>);
 
 <%= deps.exporter('inject') %> = {
@@ -17,6 +17,6 @@
     'steeplejack-server',
     '$config',
     '<%- server %>',<% if (sockets) { %>
-    'steeplejack-socketio',<% } %>
+    'socketio',<% } %>
   ]
 };
