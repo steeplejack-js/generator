@@ -30,6 +30,8 @@ function factory (stackName, prompts) {
 
         /* Run npm install */
         return runner(stackName, dir, 'npm install')
+          .then(() => runner(stackName, dir, 'npm run test:lint:src -- --fix'))
+          .then(() => runner(stackName, dir, 'npm run test:lint:test -- --fix'))
           .then(() => runner(stackName, dir, 'npm run ci'))
           .then(() => runner(stackName, dir, 'npm run serve', 5000))
           .then(() => log(stackName, 'Completed successfully'));
@@ -91,16 +93,16 @@ function runner (stack, cwd, cmd, timeout) {
 
 /* Define the applications */
 const apps = [
-  factory('expressNoCompile', {
-    author: 'expressNoCompile',
-    compile: false,
-    description: 'expressNoCompile description',
-    envvarPrefix: 'ENC',
-    lint: 'none',
-    name: 'express-no-compile',
-    server: 'express',
-    sockets: false
-  }),
+  // factory('expressNoCompile', {
+  //   author: 'expressNoCompile',
+  //   compile: false,
+  //   description: 'expressNoCompile description',
+  //   envvarPrefix: 'ENC',
+  //   lint: 'none',
+  //   name: 'express-no-compile',
+  //   server: 'express',
+  //   sockets: false
+  // }),
   factory('expressCompile', {
     author: 'expressCompile',
     compile: true,
@@ -111,26 +113,26 @@ const apps = [
     server: 'express',
     sockets: true
   }),
-  factory('restifyNoCompile', {
-    author: 'restifyNoCompile',
-    compile: false,
-    description: 'restifyNoCompile description',
-    envvarPrefix: 'RNC',
-    lint: 'semistandard',
-    name: 'restify-no-compile',
-    server: 'restify',
-    sockets: false
-  }),
-  factory('restifyCompile', {
-    author: 'restifyCompile',
-    compile: true,
-    description: 'restifyCompile description',
-    envvarPrefix: 'RC',
-    lint: 'standard',
-    name: 'restify-compile',
-    server: 'restify',
-    sockets: true
-  })
+  // factory('restifyNoCompile', {
+  //   author: 'restifyNoCompile',
+  //   compile: false,
+  //   description: 'restifyNoCompile description',
+  //   envvarPrefix: 'RNC',
+  //   lint: 'semistandard',
+  //   name: 'restify-no-compile',
+  //   server: 'restify',
+  //   sockets: false
+  // }),
+  // factory('restifyCompile', {
+  //   author: 'restifyCompile',
+  //   compile: true,
+  //   description: 'restifyCompile description',
+  //   envvarPrefix: 'RC',
+  //   lint: 'standard',
+  //   name: 'restify-compile',
+  //   server: 'restify',
+  //   sockets: true
+  // })
 ];
 
 apps.reduce((thenable, app) => thenable
