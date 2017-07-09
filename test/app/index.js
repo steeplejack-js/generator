@@ -15,12 +15,16 @@ const helpers = require('yeoman-test');
 
 const baseDir = path.resolve(__dirname, '..', '..');
 
+let startPort = 9000;
+
 function factory (stackName, prompts) {
   return () => {
     log(stackName, `Building new application: ${JSON.stringify(prompts, null, 2)}`);
 
     /* Change CWD - this changes after each running */
     process.chdir(baseDir);
+
+    const envvarPrefix = prompts.envvarPrefix;
 
     return helpers
       .run(path.join(process.cwd(), 'generators', 'app'))
@@ -30,10 +34,19 @@ function factory (stackName, prompts) {
 
         /* Run npm install */
         return runner(stackName, dir, 'npm install')
-          .then(() => runner(stackName, dir, 'npm run test:lint:src -- --fix'))
-          .then(() => runner(stackName, dir, 'npm run test:lint:test -- --fix'))
+          .then(() => runner(stackName, dir, 'npm run test:lint:src -- --fix', {
+            allowFail: true
+          }))
+          .then(() => runner(stackName, dir, 'npm run test:lint:test -- --fix', {
+            allowFail: true
+          }))
           .then(() => runner(stackName, dir, 'npm run ci'))
-          .then(() => runner(stackName, dir, 'npm run serve', 5000))
+          .then(() => runner(stackName, dir, 'npm run serve', {
+            env: {
+              [`${envvarPrefix}SERVER_PORT`]: startPort++
+            },
+            timeout: 5000
+          }))
           .then(() => log(stackName, 'Completed successfully'));
       })
       .catch(err => {
@@ -48,7 +61,7 @@ function log (stack, message) {
   console.log(`[${stack}] ${message}`);
 }
 
-function runner (stack, cwd, cmd, timeout) {
+function runner (stack, cwd, cmd, { allowFail = false, timeout = null } = {}) {
   return new Promise((resolve, reject) => {
     log(stack, `Running script: ${cmd}`);
 
@@ -70,17 +83,17 @@ function runner (stack, cwd, cmd, timeout) {
 
     if (timeout) {
       setTimeout(() => {
-        runningProcess.kill('SIGKILL');
+        runningProcess.kill();
         resolve();
       }, timeout);
     } else {
       setTimeout(() => {
-        runningProcess.kill('SIGKILL');
+        runningProcess.kill();
         reject(new Error('Exceeded runner timeout'));
       }, 300000);
 
       runningProcess.on('close', (code) => {
-        if (code === 0) {
+        if (code === 0 || allowFail) {
           resolve();
           return;
         }
