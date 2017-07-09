@@ -61,7 +61,7 @@ function log (stack, message) {
   console.log(`[${stack}] ${message}`);
 }
 
-function runner (stack, cwd, cmd, { allowFail = false, timeout = null } = {}) {
+function runner (stack, cwd, cmd, { allowFail = false, env = {}, timeout = null } = {}) {
   return new Promise((resolve, reject) => {
     log(stack, `Running script: ${cmd}`);
 
@@ -70,7 +70,8 @@ function runner (stack, cwd, cmd, { allowFail = false, timeout = null } = {}) {
     const command = args.shift();
 
     const runningProcess = spawn(command, args, {
-      cwd
+      cwd,
+      env
     });
 
     runningProcess.stdout.on('data', (data) => {
