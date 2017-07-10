@@ -4,8 +4,8 @@
 [![Build Status](https://img.shields.io/travis/rust-lang/rust.svg?style=flat-square)](https://travis-ci.org/steeplejack-js/generator)
 [![Node Version](https://img.shields.io/badge/node.js-%3E%3D_4.0-brightgreen.svg?style=flat-square)](http://nodejs.org/download/)
 
-Yeoman generator for creating Steeplejack apps
+Yeoman generator for creating [Steeplejack](http://getsteeplejack.com) apps
 
 # Commands
 
-- **yo steeplejack**: Create a standard Steeplejack application
+- **yo steeplejack**: Create a new Steeplejack application
