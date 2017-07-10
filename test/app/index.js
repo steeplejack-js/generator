@@ -37,9 +37,9 @@ function factory (stackName, prompts) {
             allowFail: true
           }))
           .then(() => runner(stackName, dir, 'npm run ci'))
-          // .then(() => runner(stackName, dir, 'npm run serve', {
-          //   timeout: 5000
-          // }))
+          .then(() => runner(stackName, dir, 'npm run serve', {
+            timeout: 5000
+          }))
           .then(() => log(stackName, 'Completed successfully'));
       })
       .catch(err => {
@@ -77,12 +77,12 @@ function runner (stack, cwd, cmd, { allowFail = false, env = undefined, timeout 
 
     if (timeout) {
       setTimeout(() => {
-        runningProcess.kill();
+        runningProcess.kill('SIGTERM');
         resolve();
       }, timeout);
     } else {
       setTimeout(() => {
-        runningProcess.kill();
+        runningProcess.kill('SIGTERM');
         reject(new Error('Exceeded runner timeout'));
       }, 300000);
 
