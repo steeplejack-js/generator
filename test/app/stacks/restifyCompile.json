@@ -1,0 +1,10 @@
+{
+  "author": "restifyCompile",
+  "compile": true,
+  "description": "restifyCompile description",
+  "envvarPrefix": "RC",
+  "lint": "standard",
+  "name": "restify-compile",
+  "server": "restify",
+  "sockets": true
+}

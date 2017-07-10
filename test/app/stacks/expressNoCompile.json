@@ -1,0 +1,10 @@
+{
+  "author": "expressNoCompile",
+  "compile": false,
+  "description": "expressNoCompile description",
+  "envvarPrefix": "ENC",
+  "lint": "none",
+  "name": "express-no-compile",
+  "server": "express",
+  "sockets": false
+}

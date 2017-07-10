@@ -1,0 +1,10 @@
+{
+  "author": "expressCompile",
+  "compile": true,
+  "description": "expressCompile description",
+  "envvarPrefix": "EC",
+  "lint": "airbnb",
+  "name": "express-compile",
+  "server": "express",
+  "sockets": true
+}

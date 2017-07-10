@@ -5,7 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run -s test:lint && npm run -s test:app",
-    "test:app": "node ./test/app",
+    "test:app": "npm run -s test:app:expressCompile && npm run -s test:app:expressNoCompile && npm run -s test:app:restifyCompile && npm run -s test:app:restifyNoCompile",
+    "test:app:expressCompile": "node ./test/app expressCompile && npm run test:kill",
+    "test:app:expressNoCompile": "node ./test/app expressNoCompile && npm run test:kill",
+    "test:app:restifyCompile": "node ./test/app restifyCompile && npm run test:kill",
+    "test:app:restifyNoCompile": "node ./test/app restifyNoCompile && npm run test:kill",
+    "test:kill": "killall node",
     "test:lint": "semistandard"
   },
   "repository": {

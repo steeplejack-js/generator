@@ -1,0 +1,10 @@
+{
+  "author": "restifyNoCompile",
+  "compile": false,
+  "description": "restifyNoCompile description",
+  "envvarPrefix": "RNC",
+  "lint": "semistandard",
+  "name": "restify-no-compile",
+  "server": "restify",
+  "sockets": false
+}
