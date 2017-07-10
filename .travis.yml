@@ -8,3 +8,12 @@ matrix:
   fast_finish: true
 
 sudo: false
+
+deploy:
+  provider: npm
+  email: simon@simonemms.com
+  api_key:
+    secure: AE3uysDw7Yai8psY2Y8pfZzKqtqRmqc2fc7ytB0bOHm1OTENETyjCdDOxCkrWKy6MegqKLsT+HkDk1v/q8nJMhlr+BrhKQ5na6EaERKZwfYE9Efj6sR44XWSlZSYxmTUA/AJD8Fa9jxvJ2VF95HxAtCqDNh7+yxUy5BzHSI+kbQ2TPrpz1jlB6z2gcqyEafmE+uGJgiTi8W6wsrQCc2ELgjqlpmmVYqCt/ueLn+ZeC82jRUe6WPIhTjrIM1FQm1q8/ftax2QN9BAAfnrvAW+P3nzeI3hrk4OoZ3e5xEtIW0I/EErJFZRAXS/H2QEc+BVZunX1nfKvuBXzhlP+/7OH2xl/RPf5STLGY1V1EWZC60z+RDcaTW2DyhhOl3DlNH24GO2z76xp3zXX3u8EtdqSAN2SgoG/YI4ejm3Yi5GoVLRklq9pDKUIvsRzEmLiuUUimI7tuvSQz1jBTGa+3eLzrADTrKSVm2Nz11CTtszTo5/R5myimuvz5V8OVeuBCn2sDh+QcnsD+jP+HI6F3ow4aaH+fRYvGYi31INqwZLXxFZEMyocYYCyu0vzVWOfgRydSi97Ry3E6lRD5BUDZff8aGoDpXjZLy5+Gn2ETkft95k2NIQrbEIXUVqOj0cnPJUQPFcXOrfrAzV1zrl2KkK3wXRKi04cfFzIOCd6+4WNI0=
+  on:
+    tags: true
+    repo: steeplejack-js/generator
