@@ -15,8 +15,8 @@
   const theme = 'default';
 
   express.set('view engine', 'pug')
-    .set('views', path.join(process.cwd(), 'src', 'themes', 'theme', 'templates'))
-    .use('/', expressLib.static(path.join(process.cwd(), 'src', 'themes', 'theme', 'public')));
+    .set('views', path.join(process.cwd(), 'src', 'themes', theme, 'templates'))
+    .use('/', expressLib.static(path.join(process.cwd(), 'src', 'themes', theme, 'public')));
 
   return express;
 };
