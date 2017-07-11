@@ -66,13 +66,13 @@ describe('express tests', function () {
 
       expect(this.expressInst.set).to.be.calledTwice
         .calledWithExactly('view engine', 'pug')
-        .calledWithExactly('views', path.join(process.cwd(), 'src', 'themes', 'theme', 'templates'));
+        .calledWithExactly('views', path.join(process.cwd(), 'src', 'themes', 'default', 'templates'));
 
       expect(this.expressInst.use).to.be.calledOnce
         .calledWithExactly('/', 'staticResult');
 
       expect(this.express.expressLib.static).to.be.calledOnce
-        .calledWithExactly(path.join(process.cwd(), 'src', 'themes', 'theme', 'public'));
+        .calledWithExactly(path.join(process.cwd(), 'src', 'themes', 'default', 'public'));
 
     });
 
