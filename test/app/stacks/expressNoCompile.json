@@ -13,18 +13,6 @@
     "timeout": 4000,
     "endpoints": [
       {
-        "url": "http://localhost:3000/",
-        "status": 404
-      },
-      {
-        "url": "http://localhost:3000/assets/scripts/app.js",
-        "status": 200
-      },
-      {
-        "url": "http://localhost:3000/assets/styles/main.css",
-        "status": 200
-      },
-      {
         "url": "http://localhost:9999/",
         "status": 404
       },
