@@ -92,6 +92,9 @@ function runner (stack, cwd, cmd, { allowFail = false, env = undefined, tests = 
                     if (res.status !== endpoint.status) {
                       reject(new Error(`HTTP Status not matched. Expected: ${endpoint.status} actual: ${res.status}`));
                       return;
+                    } else if (err) {
+                      reject(err);
+                      return;
                     }
 
                     resolve();
