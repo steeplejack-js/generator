@@ -97,7 +97,8 @@ function runner (stack, cwd, cmd, { allowFail = false, env = undefined, tests = 
                 throw new Error(`HTTP Status not matched. Expected: ${endpoint.status} actual: ${statusCode}`);
               }
             });
-        }, Promise.resolve());
+        }, Promise.resolve())
+          .catch(err => reject(err));
       }, testTimeout);
     }
 
