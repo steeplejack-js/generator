@@ -1,10 +1,29 @@
 {
-  "author": "expressCompile",
-  "compile": true,
-  "description": "expressCompile description",
-  "envvarPrefix": "EC",
-  "lint": "airbnb",
-  "name": "express-compile",
-  "server": "express",
-  "sockets": true
+  "opts": {
+    "author": "expressCompile",
+    "compile": true,
+    "description": "expressCompile description",
+    "envvarPrefix": "EC",
+    "lint": "airbnb",
+    "name": "express-compile",
+    "server": "express",
+    "sockets": true
+  },
+  "tests": {
+    "timeout": 4000,
+    "endpoints": [
+      {
+        "url": "http://localhost:3000/",
+        "status": 404
+      },
+      {
+        "url": "http://localhost:3000/assets/scripts/app.js",
+        "status": 200
+      },
+      {
+        "url": "http://localhost:3000/assets/styles/main.css",
+        "status": 200
+      }
+    ]
+  }
 }

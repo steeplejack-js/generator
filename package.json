@@ -46,6 +46,7 @@
   "devDependencies": {
     "ejs-lint": "^0.3.0",
     "semistandard": "^9.2.1",
+    "superagent": "^3.5.2",
     "yeoman-test": "^1.6.0"
   }
 }

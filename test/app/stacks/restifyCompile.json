@@ -1,10 +1,21 @@
 {
-  "author": "restifyCompile",
-  "compile": true,
-  "description": "restifyCompile description",
-  "envvarPrefix": "RC",
-  "lint": "standard",
-  "name": "restify-compile",
-  "server": "restify",
-  "sockets": true
+  "opts": {
+    "author": "restifyCompile",
+    "compile": true,
+    "description": "restifyCompile description",
+    "envvarPrefix": "RC",
+    "lint": "standard",
+    "name": "restify-compile",
+    "server": "restify",
+    "sockets": true
+  },
+  "tests": {
+    "timeout": 4000,
+    "endpoints": [
+      {
+        "url": "http://localhost:3000/",
+        "status": 404
+      }
+    ]
+  }
 }

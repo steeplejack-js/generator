@@ -8,6 +8,7 @@ const path = require('path');
 
 /* Third-party modules */
 const helpers = require('yeoman-test');
+const request = require('superagent').agent();
 
 /* Files */
 
@@ -15,7 +16,9 @@ const helpers = require('yeoman-test');
 const stackName = process.argv[2];
 const app = require(`./stacks/${stackName}`);
 
-function factory (stackName, prompts) {
+function factory (stackName, stack) {
+  const prompts = stack.opts;
+
   log(stackName, `Building new application: ${JSON.stringify(prompts, null, 2)}`);
 
   return helpers
@@ -34,6 +37,7 @@ function factory (stackName, prompts) {
         }))
         .then(() => runner(stackName, dir, 'npm run ci'))
         .then(() => runner(stackName, dir, 'npm run serve', {
+          tests: stack.tests,
           timeout: 5000
         }))
         .then(() => log(stackName, 'Completed successfully'));
@@ -49,7 +53,7 @@ function log (stack, message) {
   console.log(`[${stack}] ${message}`);
 }
 
-function runner (stack, cwd, cmd, { allowFail = false, env = undefined, timeout = null } = {}) {
+function runner (stack, cwd, cmd, { allowFail = false, env = undefined, tests = null, timeout = null } = {}) {
   return new Promise((resolve, reject) => {
     log(stack, `Running script: ${cmd}`);
 
@@ -69,6 +73,37 @@ function runner (stack, cwd, cmd, { allowFail = false, env = undefined, timeout 
     runningProcess.stderr.on('data', (data) => {
       log(stack, data);
     });
+
+    if (tests) {
+      const testTimeout = tests.timeout || 0;
+
+      setTimeout(() => {
+        log(stack, 'Running tests');
+
+        tests.endpoints.reduce((thenable, endpoint) => {
+          return thenable
+            .then(() => {
+              return new Promise((resolve, reject) => {
+                log(stack, `Making call to ${endpoint.url}`);
+
+                request
+                  .get(endpoint.url)
+                  .end((err, res) => {
+                    if (res.status !== endpoint.status) {
+                      reject(new Error(`HTTP Status not matched. Expected: ${endpoint.status} actual: ${res.status}`));
+                      return;
+                    }
+
+                    resolve();
+                  });
+              });
+            });
+        }, Promise.resolve())
+          .catch(err => {
+            console.log(err);
+          });
+      }, testTimeout);
+    }
 
     if (timeout) {
       setTimeout(() => {

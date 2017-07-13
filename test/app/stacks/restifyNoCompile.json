@@ -1,10 +1,21 @@
 {
-  "author": "restifyNoCompile",
-  "compile": false,
-  "description": "restifyNoCompile description",
-  "envvarPrefix": "RNC",
-  "lint": "semistandard",
-  "name": "restify-no-compile",
-  "server": "restify",
-  "sockets": false
+  "opts": {
+    "author": "restifyNoCompile",
+    "compile": false,
+    "description": "restifyNoCompile description",
+    "envvarPrefix": "RNC",
+    "lint": "semistandard",
+    "name": "restify-no-compile",
+    "server": "restify",
+    "sockets": false
+  },
+  "tests": {
+    "timeout": 4000,
+    "endpoints": [
+      {
+        "url": "http://localhost:3000/",
+        "status": 404
+      }
+    ]
+  }
 }
