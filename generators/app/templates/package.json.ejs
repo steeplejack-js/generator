@@ -26,27 +26,21 @@
     "instrument": <%- !compile %>
   },
   "scripts": {
-    "clean": "rm -Rf ./build ./coverage ./dist<% if (server === 'express') { %> ./src/public/assets/scripts ./src/public/assets/styles<% } %>",
+    "clean": "rm -Rf ./build ./coverage ./dist<% if (server === 'express') { %> ./src/themes/*/public/assets/scripts ./src/themes/*/public/assets/styles<% } %>",
     "clean:all": "npm run clean && rm -Rf .nyc_output npm-debug.log",
     "ci": "npm test -s && npm run coverage -s && npm run compile -s",
-    "compile": "npm run clean && npm run compile:js -s<% if (server === 'express') { %> && npm run compile:scripts && npm run compile:styles<% } %> && npm run copy && (cd build && npm install --production)",
-    "compile:js": "<% if (compile) { %>cross-env NODE_ENV=server babel --source-maps=inline --out-dir ./build ./src<% } else { %>cp -Rf src build<% } %>",<% if (server === 'express') { %>
-    "compile:scripts": "mkdir -p ./src/public/assets/scripts && cross-env NODE_ENV=scripts browserify ./src/scripts/app --outfile ./src/public/assets/scripts/app.js --plugin browserify-derequire --plugin [ minifyify --no-map ] --transform babelify",
-    "compile:styles": "npm run compile:styles:sass -s && npm run compile:styles:postcss -s",
-    "compile:styles:sass": "node-sass --source-map-embed --output-style compressed --output ./src/public/assets/styles ./src/styles",
-    "compile:styles:postcss": "postcss --use autoprefixer --autoprefixer.browsers 'last 2 versions, ie >= 9, and_chr >= 2.3' ./src/public/assets/styles/*.css -d ./src/public/assets/styles",<% } %>
+    "compile": "npm run clean && <% if (server === 'express') { %> npm run compile:scripts &&<% } %> npm run compile:js -s && npm run copy && (cd build && npm install --production)",
+    "compile:js": "mkdir -p build/sc && <% if (compile) { %>cross-env NODE_ENV=server babel --source-maps=inline --out-dir ./build/src ./src<% } else { %>cp -Rf src build/src<% } %>",<% if (server === 'express') { %>
+    "compile:scripts": "webpack -p && rm ./src/themes/*/public/assets/styles/*.js* || true",<% } %>
     "copy": "npm run copy:json -s && npm run copy:docker -s<% if (server === 'express') { %> && npm run copy:public -s<% } %>",
     "copy:docker": "cp Dockerfile build",
     "copy:json": "cp package.json build<% if (compile) { %>; cp src/*.json build<% } %>",<% if (server === 'express') { %>
-    "copy:public": "cp -r ./src/public/ ./build && rm -f ./build/public/.gitkeep",<% } %>
+    "copy:public": "rm -f ./build/src/themes/*/public/.gitkeep",<% } %>
     "coverage": "cross-env NODE_ENV=test nyc mocha --ui bdd --recursive test/unit",
     "dist": "npm run compile && mkdir -p dist && cd build && npm install --production && tar -zcvf ../dist/dist.tar.gz ./",
     "postversion": "git push --tags && git push",
-    "serve": "npm run clean && <% if (server === 'express') { %>concurrently '<% } %>npm run -s serve:server<% if (server === 'express') { %>' 'npm run -s serve:scripts' 'npm run -s serve:styles' 'npm run -s serve:browsersync'<% } %>",<% if (server === 'express') { %>
-    "serve:browsersync": "browser-sync start --proxy=localhost:9999 --ws --open=local --files='./src/public/**/*.css,./src/public/**/*.js,./src/views'",<% } %>
-    "serve:server": "<% if (compile) { %>cross-env NODE_ENV=server <% } %>nodemon<% if (compile) { %> --exec babel-node<% } %> --inspect=5858 --legacy-watch --ignore ./src/public ./src/app.js | bunyan",<% if (server === 'express') { %>
-    "serve:scripts": "nodemon --legacy-watch --ignore ./src/public --exec 'npm run compile:scripts -s'",
-    "serve:styles": "nodemon --legacy-watch --ignore ./src/public --ext scss --exec 'npm run compile:styles -s'",<% } %>
+    "serve": "npm run clean && <% if (server === 'express') { %>concurrently --kill-others --kill-others-on-fail '<% } %>npm run -s serve:server<% if (server === 'express') { %>' 'webpack --watch'<% } %>",
+    "serve:server": "<% if (compile) { %>cross-env NODE_ENV=server <% } %>nodemon<% if (compile) { %> --exec babel-node<% } %> --inspect=5858 --legacy-watch --ignore ./src/themes ./src/app.js | bunyan",
     "start": "node<% if (compile) { %> --require source-map-support/register<% } %> ./",
     "test": "npm run test:lint -s && npm run test:unit -s && npm run test:e2e -s",
     "test:e2e": "<% if (compile) { %>cross-env NODE_ENV=server <% } %><%- envvarPrefix %>LOGGING_STREAMS_STDOUT_ACTIVE=false mocha <% if (compile) { %>--compilers js:babel-register <% } %>--throw-deprecation --ui bdd --full-trace --recursive test/e2e/test",
@@ -84,37 +78,43 @@
   },
   "devDependencies": {<% if (server === 'express') { %>
     "autoprefixer": "^7.1.2",<% } %><% if (compile) { %>
-    "babel-cli": "^6.24.1",<% } %><% if (compile && lint === 'airbnb') { %>
+    "babel-cli": "^6.24.1",<% } %><% if (server === 'express') { %>
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.1.0",<% } %><% if (compile && lint === 'airbnb') { %>
     "babel-eslint": "^7.2.3",<% } %><% if (compile) { %>
     "babel-plugin-istanbul": "^4.1.4",<% } %><% if (server === 'express') { %>
     "babel-preset-env": "^1.6.0",<% } %><% if (compile) { %>
     "babel-preset-latest": "^6.24.1",<% } %><% if (compile) { %>
     "babel-register": "^6.24.0",<% } %><% if (server === 'express') { %>
-    "babelify": "^7.3.0",<% } %><% if (server === 'express') { %>
     "browser-sync": "^2.18.0",
-    "browserify": "^14.4.0",
-    "browserify-derequire": "^0.9.4",<% } %>
+    "browser-sync-webpack-plugin": "^1.2.0",<% } %>
     "chai": "^4.0.2",
     "chai-as-promised": "^7.1.1",<% if (server === 'express') { %>
     "concurrently": "^3.5.0",<% } %>
-    "cross-env": "^5.0.1",<% if (lint === 'airbnb') { %>
+    "cross-env": "^5.0.1",<% if (server === 'express') { %>
+    "css-loader": "^0.28.0",<% } %><% if (lint === 'airbnb') { %>
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.0.2",
     "eslint-plugin-classes": "^0.1.1",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.1.0",<% } %><% if (server === 'express') { %>
-    "minifyify": "^7.3.5",<% } %>
+    "extract-text-webpack-plugin": "^3.0.0",
+    "glob": "^7.1.0",<% } %>
     "mocha": "^3.4.2",
     "nodemon": "^1.11.0",<% if (server === 'express') { %>
     "node-sass": "^4.5.3",<% } %>
     "nyc": "^11.0.3",<% if (server === 'express') { %>
-    "postcss-cli": "^4.1.0",<% } %>
-    "proxyquire": "^1.8.0",<% if (lint === 'semistandard') { %>
+    "postcss-cli": "^4.1.0",
+    "postcss-loader": "^2.0.0",<% } %>
+    "proxyquire": "^1.8.0",<% if (server === 'express') { %>
+    "sass-loader": "^6.0.0",<% } %><% if (lint === 'semistandard') { %>
     "semistandard": "^11.0.0",<% } %>
     "sinon": "^2.3.6",
     "sinon-chai": "^2.11.0",<% if (lint === 'standard') { %>
-    "standard": "^10.0.2",<% } %>
+    "standard": "^10.0.2",<% } %><% if (server === 'express') { %>
+    "style-loader": "^0.18.0",
+    "webpack": "^3.2.0",<% } %>
     "supertest": "^3.0.0"
   }
 }

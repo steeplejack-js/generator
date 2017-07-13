@@ -204,12 +204,15 @@ module.exports = class Steeplejack extends Generator {
     if (config.lint !== 'airbnb') {
       ignore.push('.eslintrc');
       ignore.push('test/.eslintrc');
+      ignore.push('.eslintignore');
     }
 
     if (config.server === 'restify') {
       ignore.push('src/server/express.js');
       ignore.push('src/themes/*');
       ignore.push('test/unit/server/express.test.js');
+      ignore.push('postcss.config.js');
+      ignore.push('webpack.config.js');
     } else if (config.server === 'express') {
       ignore.push('src/server/restify.js');
       ignore.push('test/unit/server/restify.test.js');

@@ -1,0 +1,71 @@
+/**
+ * webpack.config
+ */
+
+/* Node modules */
+const path = require('path');
+
+/* Third-party modules */
+const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const glob = require('glob');
+
+/* Files */
+
+exports.default = {
+  devtool: 'source-map',
+  entry: glob.sync('./src/themes/*/{scripts,styles}/*.*').reduce((result, file) => {
+    const obj = path.parse(file.replace(/(scripts|styles)/, 'public/assets/$1'));
+
+    /* Key/value pair is dest/src */
+    result[`${obj.dir}/${obj.name}`] = file;
+
+    return result;
+  }, {}),
+  module: {
+    rules: [{
+      test: /\.js$/,
+      exclude: /(node_modules|bower_components)/,
+      use: [{
+        loader: 'babel-loader',
+        options: {
+          presets: [
+            'env',
+          ],
+        },
+      }],
+    }, {
+      test: /\.scss$/,
+      use: ExtractTextPlugin.extract({
+        fallback: 'style-loader',
+        use: [
+          'css-loader',
+          'sass-loader',
+          'postcss-loader',
+        ],
+      }),
+    }],
+  },
+  output: {
+    path: __dirname,
+    filename: '[name].js',
+  },
+  plugins: [
+    new ExtractTextPlugin({
+      filename: '[name].css'
+    }),
+    new BrowserSyncPlugin({
+      files: [
+        './src/themes/*/public/**/*.css',
+        './src/themes/*/public/**/*.js',
+      ],
+      host: 'localhost',
+      open: false,
+      port: 3000,
+      proxy: {
+        target: 'http://localhost:9999',
+        ws: true,
+      },
+    }),
+  ],
+};
