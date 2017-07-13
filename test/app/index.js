@@ -94,7 +94,7 @@ function runner (stack, cwd, cmd, { allowFail = false, env = undefined, tests = 
             })
             .then(({ statusCode }) => {
               if (statusCode !== endpoint.status) {
-                throw new Error(`HTTP Status not matched. Expected: ${endpoint.status} actual: ${res.status}`)
+                throw new Error(`HTTP Status not matched. Expected: ${endpoint.status} actual: ${statusCode}`);
               }
             });
         }, Promise.resolve());
