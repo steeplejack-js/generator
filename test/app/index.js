@@ -8,7 +8,7 @@ const path = require('path');
 
 /* Third-party modules */
 const helpers = require('yeoman-test');
-const request = require('superagent').agent();
+const request = require('request-promise-native');
 
 /* Files */
 
@@ -83,28 +83,21 @@ function runner (stack, cwd, cmd, { allowFail = false, env = undefined, tests = 
         tests.endpoints.reduce((thenable, endpoint) => {
           return thenable
             .then(() => {
-              return new Promise((resolve, reject) => {
-                log(stack, `Making call to ${endpoint.url}`);
+              log(stack, `Making call to ${endpoint.url}`);
 
-                request
-                  .get(endpoint.url)
-                  .end((err, res) => {
-                    if (res.status !== endpoint.status) {
-                      reject(new Error(`HTTP Status not matched. Expected: ${endpoint.status} actual: ${res.status}`));
-                      return;
-                    } else if (err) {
-                      reject(err);
-                      return;
-                    }
-
-                    resolve();
-                  });
+              return request({
+                method: 'GET',
+                resolveWithFullResponse: true,
+                simple: false,
+                url: endpoint.url
               });
+            })
+            .then(({ statusCode }) => {
+              if (statusCode !== endpoint.status) {
+                throw new Error(`HTTP Status not matched. Expected: ${endpoint.status} actual: ${res.status}`)
+              }
             });
-        }, Promise.resolve())
-          .catch(err => {
-            console.log(err);
-          });
+        }, Promise.resolve());
       }, testTimeout);
     }
 

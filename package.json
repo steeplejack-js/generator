@@ -45,8 +45,9 @@
   },
   "devDependencies": {
     "ejs-lint": "^0.3.0",
+    "request": "^2.81.0",
+    "request-promise-native": "^1.0.4",
     "semistandard": "^9.2.1",
-    "superagent": "^3.5.2",
     "yeoman-test": "^1.6.0"
   }
 }
