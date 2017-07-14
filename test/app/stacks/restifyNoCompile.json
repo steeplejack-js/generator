@@ -10,7 +10,7 @@
     "sockets": false
   },
   "tests": {
-    "timeout": 4000,
+    "timeout": 8000,
     "endpoints": [
       {
         "url": "http://localhost:9999/",

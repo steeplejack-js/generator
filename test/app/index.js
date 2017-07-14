@@ -38,7 +38,7 @@ function factory (stackName, stack) {
         .then(() => runner(stackName, dir, 'npm run ci'))
         .then(() => runner(stackName, dir, 'npm run serve', {
           tests: stack.tests,
-          timeout: 5000
+          timeout: 10000
         }))
         .then(() => log(stackName, 'Completed successfully'));
     })
