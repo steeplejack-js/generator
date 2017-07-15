@@ -2,7 +2,7 @@
   "name": "<%- name %>",
   "version": "0.0.0",
   "description": "<%- description %>",
-  "main": "./<% if (!compile) { %>src/<% } %>app",
+  "main": "./src/app",
   "nyc": {
     "all": true,
     "check-coverage": true,
@@ -30,7 +30,7 @@
     "clean:all": "npm run clean && rm -Rf .nyc_output npm-debug.log",
     "ci": "npm test -s && npm run coverage -s && npm run compile -s",
     "compile": "npm run clean && <% if (server === 'express') { %> npm run compile:scripts &&<% } %> npm run compile:js -s && npm run copy && (cd build && npm install --production)",
-    "compile:js": "mkdir -p build/sc && <% if (compile) { %>cross-env NODE_ENV=server babel --source-maps=inline --out-dir ./build/src ./src<% } else { %>cp -Rf src build/src<% } %>",<% if (server === 'express') { %>
+    "compile:js": "mkdir -p build/src && <% if (compile) { %>cross-env NODE_ENV=server babel --source-maps=inline --out-dir ./build/src ./src<% } else { %>cp -Rf src build/src<% } %>",<% if (server === 'express') { %>
     "compile:scripts": "webpack -p && rm ./src/themes/*/public/assets/styles/*.js* || true",<% } %>
     "copy": "npm run copy:json -s && npm run copy:docker -s<% if (server === 'express') { %> && npm run copy:public -s<% } %>",
     "copy:docker": "cp Dockerfile build",
