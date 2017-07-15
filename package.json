@@ -11,7 +11,7 @@
     "test:app:expressNoCompile": "echo 'expressNoCompile' && node ./test/app expressNoCompile && npm run test:kill",
     "test:app:restifyCompile": "echo 'restifyCompile' && node ./test/app restifyCompile && npm run test:kill",
     "test:app:restifyNoCompile": "echo 'restifyNoCompile' && node ./test/app restifyNoCompile && npm run test:kill",
-    "test:kill": "killall node",
+    "test:kill": "killall node || true",
     "test:lint": "semistandard"
   },
   "repository": {
