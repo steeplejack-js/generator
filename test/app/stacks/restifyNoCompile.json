@@ -3,7 +3,7 @@
     "author": "restifyNoCompile",
     "compile": false,
     "description": "restifyNoCompile description",
-    "envvarPrefix": "",
+    "envvarPrefix": "TEST_",
     "lint": "semistandard",
     "name": "restify-no-compile",
     "server": "restify",
@@ -13,7 +13,7 @@
     "timeout": 8000,
     "endpoints": [
       {
-        "url": "http://localhost:${port}/",
+        "url": "http://localhost:{port}/",
         "status": 404
       }
     ]

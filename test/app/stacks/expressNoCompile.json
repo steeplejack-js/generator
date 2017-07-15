@@ -3,7 +3,7 @@
     "author": "expressNoCompile",
     "compile": false,
     "description": "expressNoCompile description",
-    "envvarPrefix": "",
+    "envvarPrefix": "TEST_",
     "lint": "none",
     "name": "express-no-compile",
     "server": "express",
@@ -13,15 +13,15 @@
     "timeout": 8000,
     "endpoints": [
       {
-        "url": "http://localhost:${port}/",
+        "url": "http://localhost:{port}/",
         "status": 404
       },
       {
-        "url": "http://localhost:${port}/assets/scripts/app.js",
+        "url": "http://localhost:{port}/assets/scripts/app.js",
         "status": 200
       },
       {
-        "url": "http://localhost:${port}/assets/styles/main.css",
+        "url": "http://localhost:{port}/assets/styles/main.css",
         "status": 200
       }
     ]

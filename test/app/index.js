@@ -59,7 +59,7 @@ function factory (stackName, stack) {
         }))
         .then(buildDir => runner(stackName, buildDir, 'npm start', {
           env: {
-            SERVER_PORT: 9998
+            TEST_SERVER_PORT: 9998
           },
           port: 9998,
           tests: stack.tests,
@@ -112,7 +112,7 @@ function runner (stack, cwd, cmd, { allowFail = false, env = undefined, port = 9
         log(stack, 'Running tests');
 
         tests.endpoints.reduce((thenable, endpoint) => {
-          const url = endpoint.url.replace('${port}', port.toString());
+          const url = endpoint.url.replace('{port}', port.toString());
           return thenable
             .then(() => {
               log(stack, `Making call to ${url}`);
