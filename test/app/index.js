@@ -3,12 +3,16 @@
  */
 
 /* Node modules */
-const { spawn } = require('child_process');
+const fs = require('fs-extra');
+const os = require('os');
 const path = require('path');
+const { spawn } = require('child_process');
 
 /* Third-party modules */
+const _ = require('lodash');
 const helpers = require('yeoman-test');
 const request = require('request-promise-native');
+const uuid = require('uuid');
 
 /* Files */
 
@@ -40,6 +44,27 @@ function factory (stackName, stack) {
           tests: stack.tests,
           timeout: 10000
         }))
+        .then(() => runner(stackName, dir, 'npm run compile'))
+        .then(() => new Promise((resolve, reject) => {
+          /* Move build to /tmp folder root */
+          const buildDir = path.resolve(os.tmpdir(), uuid.v4());
+          fs.move(path.resolve(dir, 'build'), buildDir, (err) => {
+            if (err) {
+              reject(err);
+              return;
+            }
+
+            resolve(buildDir);
+          });
+        }))
+        .then(buildDir => runner(stackName, buildDir, 'npm start', {
+          env: {
+            SERVER_PORT: 9998
+          },
+          port: 9998,
+          tests: stack.tests,
+          timeout: 10000
+        }))
         .then(() => log(stackName, 'Completed successfully'));
     })
     .catch(err => {
@@ -53,7 +78,7 @@ function log (stack, message) {
   console.log(`[${stack}] ${message}`);
 }
 
-function runner (stack, cwd, cmd, { allowFail = false, env = undefined, tests = null, timeout = null } = {}) {
+function runner (stack, cwd, cmd, { allowFail = false, env = undefined, port = 9999, tests = null, timeout = null } = {}) {
   return new Promise((resolve, reject) => {
     log(stack, `Running script: ${cmd}`);
 
@@ -61,9 +86,15 @@ function runner (stack, cwd, cmd, { allowFail = false, env = undefined, tests = 
 
     const command = args.shift();
 
+    const envvars = process.env;
+
+    _.forEach(env, (value, key) => {
+      envvars[key] = value;
+    });
+
     const runningProcess = spawn(command, args, {
       cwd,
-      env
+      env: envvars
     });
 
     runningProcess.stdout.on('data', (data) => {
@@ -81,15 +112,16 @@ function runner (stack, cwd, cmd, { allowFail = false, env = undefined, tests = 
         log(stack, 'Running tests');
 
         tests.endpoints.reduce((thenable, endpoint) => {
+          const url = endpoint.url.replace('${port}', port.toString());
           return thenable
             .then(() => {
-              log(stack, `Making call to ${endpoint.url}`);
+              log(stack, `Making call to ${url}`);
 
               return request({
                 method: 'GET',
                 resolveWithFullResponse: true,
                 simple: false,
-                url: endpoint.url
+                url
               });
             })
             .then(({ statusCode }) => {

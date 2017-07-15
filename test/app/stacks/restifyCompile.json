@@ -3,7 +3,7 @@
     "author": "restifyCompile",
     "compile": true,
     "description": "restifyCompile description",
-    "envvarPrefix": "RC",
+    "envvarPrefix": "",
     "lint": "standard",
     "name": "restify-compile",
     "server": "restify",
@@ -13,7 +13,7 @@
     "timeout": 8000,
     "endpoints": [
       {
-        "url": "http://localhost:9999/",
+        "url": "http://localhost:${port}/",
         "status": 404
       }
     ]
