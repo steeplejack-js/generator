@@ -12,6 +12,7 @@ const { spawn } = require('child_process');
 const _ = require('lodash');
 const helpers = require('yeoman-test');
 const request = require('request-promise-native');
+const portscanner = require('portscanner');
 const uuid = require('uuid');
 
 /* Files */
@@ -40,7 +41,12 @@ function factory (stackName, stack) {
           allowFail: true
         }))
         .then(() => runner(stackName, dir, 'npm run ci'))
-        .then(() => runner(stackName, dir, 'npm run serve', {
+        .then(() => portscanner.findAPortNotInUse(9000, 9999))
+        .then(port => runner(stackName, dir, 'npm run serve', {
+          env: {
+            TEST_SERVER_PORT: port
+          },
+          port,
           tests: stack.tests,
           timeout: 10000
         }))
@@ -57,14 +63,17 @@ function factory (stackName, stack) {
             resolve(buildDir);
           });
         }))
-        .then(buildDir => runner(stackName, buildDir, 'npm start', {
-          env: {
-            TEST_SERVER_PORT: 9998
-          },
-          port: 9998,
-          tests: stack.tests,
-          timeout: 10000
-        }))
+        .then(buildDir => {
+          return portscanner.findAPortNotInUse(9000, 9999)
+            .then(port => runner(stackName, buildDir, 'npm start', {
+              env: {
+                TEST_SERVER_PORT: port
+              },
+              port,
+              tests: stack.tests,
+              timeout: 10000
+            }));
+        })
         .then(() => log(stackName, 'Completed successfully'));
     })
     .catch(err => {
