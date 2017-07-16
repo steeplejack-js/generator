@@ -17,6 +17,17 @@ const uuid = require('uuid');
 
 /* Files */
 
+function getRandomInts (min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  const low = Math.floor(Math.random() * (max - min)) + min;
+
+  return [
+    low,
+    low + 1000
+  ];
+}
+
 /* Get the stack name as the first argument */
 const stackName = process.argv[2];
 const app = require(`./stacks/${stackName}`);
@@ -41,7 +52,7 @@ function factory (stackName, stack) {
           allowFail: true
         }))
         .then(() => runner(stackName, dir, 'npm run ci'))
-        .then(() => portscanner.findAPortNotInUse(9000, 9999))
+        .then(() => portscanner.findAPortNotInUse(...getRandomInts(1000, 9999)))
         .then(port => runner(stackName, dir, 'npm run serve', {
           env: {
             TEST_SERVER_PORT: port
@@ -64,7 +75,7 @@ function factory (stackName, stack) {
           });
         }))
         .then(buildDir => {
-          return portscanner.findAPortNotInUse(9000, 9999)
+          return portscanner.findAPortNotInUse(...getRandomInts(1000, 9999))
             .then(port => runner(stackName, buildDir, 'npm start', {
               env: {
                 TEST_SERVER_PORT: port
