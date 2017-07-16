@@ -11,4 +11,6 @@ services:
       - '9999:9999'
     volumes:
       - .:/opt/app
+    environment:
+      - <%- envvarPrefix %>LOGGING_STREAMS_STDOUT_LEVEL=trace
     command: npm run serve
