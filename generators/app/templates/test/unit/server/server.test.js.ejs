@@ -30,7 +30,8 @@ describe('server tests', function () {
           'socketio',<% } %>
           '$steeplejack-app',
           '$logger',<% if (server === 'express') { %>
-          'steeplejack-view'<% } %>
+          'steeplejack-view'<% } else if (server === 'restify') { %>
+          'steeplejack-fatal'<% } %>
         ]
       });
 
@@ -59,7 +60,9 @@ describe('server tests', function () {
       this.serverInst.after.returns(this.serverInst);
       this.serverInst.uncaughtException.returns(this.serverInst);
 
-      this.logger = {};
+      this.logger = {
+        trigger: sinon.spy()
+      };
 
       this.outputHandler = sinon.spy();
       this.app = {
@@ -101,6 +104,11 @@ describe('server tests', function () {
         .calledWithExactly(req, res, fn);
 
       expect(fn()).to.be.equal('viewRender');
+
+      expect(this.logger.trigger).to.be.calledOnce
+        .calledWithExactly('fatal', 'UNCAUGHT_EXCEPTION', {
+          err
+        });
 
       expect(this.View.render).to.be.calledOnce
         .calledWithExactly('error/uncaught', {
