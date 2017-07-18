@@ -15,8 +15,15 @@
   const theme = 'default';
 
   express.set('view engine', 'pug')
+    .set('x-powered-by', null)
     .set('views', path.join(process.cwd(), 'src', 'themes', theme, 'templates'))
-    .use('/', expressLib.static(path.join(process.cwd(), 'src', 'themes', theme, 'public')));
+    .use('/', expressLib.static(path.join(process.cwd(), 'src', 'themes', theme, 'public')))
+    .use((req, res, next) => {
+      /* Set useful parameters to the request/response */
+      res.locals.title = '@todo page title';
+
+      next();
+    });
 
   return express;
 };

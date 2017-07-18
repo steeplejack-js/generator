@@ -64,16 +64,39 @@ describe('express tests', function () {
         .calledWithNew
         .calledWithExactly();
 
-      expect(this.expressInst.set).to.be.calledTwice
+      expect(this.expressInst.set).to.be.calledThrice
         .calledWithExactly('view engine', 'pug')
+        .calledWithExactly('x-powered-by', null)
         .calledWithExactly('views', path.join(process.cwd(), 'src', 'themes', 'default', 'templates'));
 
-      expect(this.expressInst.use).to.be.calledOnce
+      expect(this.expressInst.use).to.be.calledTwice
         .calledWithExactly('/', 'staticResult');
 
       expect(this.express.expressLib.static).to.be.calledOnce
         .calledWithExactly(path.join(process.cwd(), 'src', 'themes', 'default', 'public'));
 
+      const varSetter = this.expressInst.use.args[1];
+
+      expect(varSetter).to.be.an('array')
+        .have.length(1);
+
+      const req = {};
+      const res = {
+        locals: {},
+      };
+      const next = sinon.spy();
+
+      expect(varSetter[0](req, res, next));
+
+      expect(next).to.be.calledOnce
+        .calledWithExactly();
+
+      expect(req).to.be.eql({});
+      expect(res).to.be.eql({
+        locals: {
+          title: '@todo page title',
+        },
+      });
     });
 
   });

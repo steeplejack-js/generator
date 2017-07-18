@@ -8,8 +8,27 @@
 
 /* Files */
 
-<%= deps.exporter('default') %> (Server, config, <%= server %><% if (sockets) { %>, socketIo<% } %>) =>
-  new Server(config.server, <%= server %><% if (sockets) { %>, socketIo<% } %>);
+<%= deps.exporter('default') %> (Server, config, <%= server %><% if (sockets) { %>, socketIo<% } %>, app, logger<% if (server === 'express') { %>, View<% } %>) => {
+  const server = new Server(config.server, <%= server %><% if (sockets) { %>, socketIo<% } %>);
+
+  const outputHandler = app.createOutputHandler(server);
+
+  server
+    .uncaughtException((req, res, err) => {
+      /* Uncaught exception - log exception */
+
+      <% if (server === 'express') { %>
+      /* Use our own error page */
+      outputHandler(req, res, () => View.render('error/uncaught', {
+        displayErrorDetail: config.server.displayErrorDetail,
+        err,
+      }, 500));<% } %>
+    })<% if (server === 'express') { %>
+    .after((req, res) => {
+      /* 404 error handler */
+      outputHandler(req, res, () => View.render('error/404', {}, 404));
+    });<% } %>
+}
 
 <%= deps.exporter('inject') %> = {
   name: 'server',
@@ -18,5 +37,7 @@
     '$config',
     '<%- server %>',<% if (sockets) { %>
     'socketio',<% } %>
+    '$steeplejack-app',<% if (server === 'express') { %>
+    'steeplejack-view'<% } %>
   ]
 };
