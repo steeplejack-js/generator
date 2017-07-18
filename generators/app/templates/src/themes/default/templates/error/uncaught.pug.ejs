@@ -1,0 +1,22 @@
+extends ../layouts/base.pug
+
+block vars
+  - pageTitle = 'Internal server error'
+
+block base_content
+
+  h1 Internal server error
+
+  p Sorry, we've had a problem and can't solve it. Please try again later.
+
+  p This has been logged.
+
+  if displayErrorDetail
+
+    h2 Error stacktrace
+
+    pre
+      if err.stack
+        | #{ err.stack }
+      else
+        | #{ err }

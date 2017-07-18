@@ -28,6 +28,8 @@
       /* 404 error handler */
       outputHandler(req, res, () => View.render('error/404', {}, 404));
     });<% } %>
+
+  return server;
 }
 
 <%= deps.exporter('inject') %> = {
@@ -37,7 +39,8 @@
     '$config',
     '<%- server %>',<% if (sockets) { %>
     'socketio',<% } %>
-    '$steeplejack-app',<% if (server === 'express') { %>
+    '$steeplejack-app',
+    '$logger',<% if (server === 'express') { %>
     'steeplejack-view'<% } %>
   ]
 };

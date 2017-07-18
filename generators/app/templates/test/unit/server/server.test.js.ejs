@@ -28,6 +28,9 @@ describe('server tests', function () {
           '$config',
           '<%- server %>',<% if (sockets) { %>
           'socketio',<% } %>
+          '$steeplejack-app',
+          '$logger',<% if (server === 'express') { %>
+          'steeplejack-view'<% } %>
         ]
       });
 
@@ -39,27 +42,95 @@ describe('server tests', function () {
 
     beforeEach(function () {
       this.config = {
-        server: 'serverConfig'
+        server: {<% if (server === 'express') { %>
+          displayErrorDetail: 'displayErrorDetailVar',<% } %>
+          port: 1234
+        },
       };
 
       this.<%- server %>Inst = {};<% if (sockets) { %>
 
       this.socket = {};<% } %>
 
-      this.serverInst = {};
-      this.Server = sinon.stub()
-        .returns(this.serverInst);
-    });
+      this.serverInst = {<% if (server === 'express') { %>
+        after: sinon.stub(),<% } %>
+        uncaughtException: sinon.stub()
+      };
+      this.serverInst.after.returns(this.serverInst);
+      this.serverInst.uncaughtException.returns(this.serverInst);
 
-    it('should create a server and configure <%- deps.lodash.upperFirst(server) %><% if (sockets) { %> with SocketIO<% } %> as the strategy', function () {
-      const obj = server(this.Server, this.config, this.<%- server %>Inst<% if (sockets) { %>, this.socket<% } %>);
+      this.logger = {};
+
+      this.outputHandler = sinon.spy();
+      this.app = {
+        createOutputHandler: sinon.stub()
+          .returns(this.outputHandler),
+      };
+      this.Server = sinon.stub()
+        .returns(this.serverInst);<% if (server === 'express') { %>
+
+      this.View = {
+        render: sinon.stub()
+          .returns('viewRender'),
+      };<% } %>
+
+      const obj = server(this.Server, this.config, this.<%- server %>Inst<% if (sockets) { %>, this.socket<% } %>, this.app, this.logger<% if (server === 'express') { %>, this.View<% } %>);
 
       expect(obj).to.be.equal(this.serverInst);
 
       expect(this.Server).to.be.calledOnce
         .calledWithNew
-        .calledWithExactly('serverConfig', this.<%- server %>Inst<% if (sockets) { %>, this.socket<% } %>);
+        .calledWithExactly(this.config.server, this.<%- server %>Inst<% if (sockets) { %>, this.socket<% } %>);
     });
+
+    it('should test the uncaught exception handler', function () {
+      const uncaught = this.serverInst.uncaughtException.args[0];
+
+      expect(uncaught).to.be.an('array')
+        .have.length(1);
+
+      const req = 'myReq';
+      const res = 'myRes';
+      const err = new Error('some error');
+
+      uncaught[0](req, res, err);
+
+      const fn = this.outputHandler.args[0][2];
+
+      expect(this.outputHandler).to.be.calledOnce
+        .calledWithExactly(req, res, fn);
+
+      expect(fn()).to.be.equal('viewRender');
+
+      expect(this.View.render).to.be.calledOnce
+        .calledWithExactly('error/uncaught', {
+        displayErrorDetail: this.config.server.displayErrorDetail,
+        err,
+      }, 500);
+    });<% if (server === 'express') { %>
+
+    it('should test the 404 handler', function () {
+      const missing = this.serverInst.after.args[0];
+
+      expect(missing).to.be.an('array')
+        .have.length(1);
+
+      const req = 'myReq';
+      const res = 'myRes';
+      const err = new Error('some error');
+
+      missing[0](req, res, err);
+
+      const fn = this.outputHandler.args[0][2];
+
+      expect(this.outputHandler).to.be.calledOnce
+        .calledWithExactly(req, res, fn);
+
+      expect(fn()).to.be.equal('viewRender');
+
+      expect(this.View.render).to.be.calledOnce
+        .calledWithExactly('error/404', {}, 404);
+    });<% } %>
 
   });
 
