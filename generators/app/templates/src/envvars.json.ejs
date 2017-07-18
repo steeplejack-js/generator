@@ -8,7 +8,8 @@
       }
     }
   },
-  "server": {
+  "server": {<% if (server === 'express') { %>
+    "displayErrorDetail": "<%- envvarPrefix %>SERVER_DISPLAY_ERROR_DETAIL",<% } %>
     "port": "<%- envvarPrefix %>SERVER_PORT"
   }
 }

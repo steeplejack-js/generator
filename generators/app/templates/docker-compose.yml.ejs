@@ -12,5 +12,6 @@ services:
     volumes:
       - .:/opt/app
     environment:
-      - <%- envvarPrefix %>LOGGING_STREAMS_STDOUT_LEVEL=trace
+      - <%- envvarPrefix %>LOGGING_STREAMS_STDOUT_LEVEL=trace<% if (server === 'express') { %>
+      - <%- envvarPrefix %>SERVER_DISPLAY_ERROR_DETAIL=true<% } %>
     command: npm run serve

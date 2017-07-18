@@ -8,7 +8,8 @@
       }
     }
   },
-  "server": {
+  "server": {<% if (server === 'express') { %>
+    "displayErrorDetail": false,<% } %>
     "port": 9999
   }
 }
