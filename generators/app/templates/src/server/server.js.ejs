@@ -49,6 +49,6 @@
     '$steeplejack-app',
     '$logger',<% if (server === 'express') { %>
     'steeplejack-view'<% } else if (server === 'restify') { %>
-    'steeplejack-fatal'<% } %>
+    'steeplejack-fatal-exception'<% } %>
   ]
 };

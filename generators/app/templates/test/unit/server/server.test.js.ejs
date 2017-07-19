@@ -31,7 +31,7 @@ describe('server tests', function () {
           '$steeplejack-app',
           '$logger',<% if (server === 'express') { %>
           'steeplejack-view'<% } else if (server === 'restify') { %>
-          'steeplejack-fatal'<% } %>
+          'steeplejack-fatal-exception'<% } %>
         ]
       });
 
@@ -56,8 +56,8 @@ describe('server tests', function () {
       this.serverInst = {<% if (server === 'express') { %>
         after: sinon.stub(),<% } %>
         uncaughtException: sinon.stub()
-      };
-      this.serverInst.after.returns(this.serverInst);
+      };<% if (server === 'express') { %>
+      this.serverInst.after.returns(this.serverInst);<% } %>
       this.serverInst.uncaughtException.returns(this.serverInst);
 
       this.logger = {
@@ -75,9 +75,10 @@ describe('server tests', function () {
       this.View = {
         render: sinon.stub()
           .returns('viewRender'),
-      };<% } %>
+      };<% } %><% if (server === 'restify') { %>
+      this.FatalException = sinon.spy();<% } %>
 
-      const obj = server(this.Server, this.config, this.<%- server %>Inst<% if (sockets) { %>, this.socket<% } %>, this.app, this.logger<% if (server === 'express') { %>, this.View<% } %>);
+      const obj = server(this.Server, this.config, this.<%- server %>Inst<% if (sockets) { %>, this.socket<% } %>, this.app, this.logger<% if (server === 'express') { %>, this.View<% } %><% if (server === 'restify') { %>, this.FatalException<% } %>);
 
       expect(obj).to.be.equal(this.serverInst);
 
@@ -101,7 +102,7 @@ describe('server tests', function () {
       const fn = this.outputHandler.args[0][2];
 
       expect(this.outputHandler).to.be.calledOnce
-        .calledWithExactly(req, res, fn);
+        .calledWithExactly(req, res, fn<% if (server === 'restify') { %>, false<% } %>);<% if (server === 'express') { %>
 
       expect(fn()).to.be.equal('viewRender');
 
@@ -114,7 +115,22 @@ describe('server tests', function () {
         .calledWithExactly('error/uncaught', {
         displayErrorDetail: this.config.server.displayErrorDetail,
         err,
-      }, 500);
+      }, 500);<% } else if (server === 'restify') { %>
+
+      let fail = false;
+
+      try {
+        fn();
+      } catch (err) {
+        fail = true;
+
+        expect(err).to.be.instanceof(this.FatalException);
+        expect(this.FatalException).to.be.calledOnce
+          .calledWithNew
+          .calledWithExactly('Unknown fatal error');
+      } finally {
+        expect(fail).to.be.true;
+      }<% } %>
     });<% if (server === 'express') { %>
 
     it('should test the 404 handler', function () {
