@@ -61,7 +61,7 @@ function factory (stackName, stack) {
           tests: stack.tests,
           timeout: 10000
         }))
-        .then(() => runner(stackName, dir, 'npm run compile'))
+        .then(() => runner(stackName, dir, 'npm run dist'))
         .then(() => new Promise((resolve, reject) => {
           /* Move build to /tmp folder root */
           const buildDir = path.resolve(os.tmpdir(), uuid.v4());
