@@ -19,13 +19,15 @@ ENV <%- envvarPrefix %>LOGGING_STREAMS_STDOUT_LEVEL=info
 
 ENV <%- envvarPrefix %>SERVER_PORT=9999
 
+# Set the user as host's current user
+RUN chown -Rf node:node /opt/app
+USER node
+
 # Install the dependencies
+RUN npm install
 
 # Expose the ports
 EXPOSE 9999 5858
-
-# Set the user as host's current user
-USER node
 
 # Run run run
 CMD npm start
