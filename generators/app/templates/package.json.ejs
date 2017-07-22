@@ -53,6 +53,7 @@
     "test:lint:test": "semistandard test",<% } else { %>
     "test:lint:src": "echo 'no linting set up'; exit 0",
     "test:lint:test": "echo 'no linting set up'; exit 0",<% } %>
+    "test:smoke": "<% if (compile) { %>cross-env NODE_ENV=server <% } %><%- envvarPrefix %>LOGGING_STREAMS_STDOUT_ACTIVE=false mocha <% if (compile) { %>--compilers js:babel-register <% } %>--throw-deprecation --ui bdd --full-trace --recursive --reporter mocha-multi --reporter-options spec=-,xunit=./reports/smoke.xml,doc=./reports/smoke.html test/smoke",
     "test:unit": "<% if (compile) { %>cross-env NODE_ENV=server <% } %>mocha <% if (compile) { %>--compilers js:babel-register <% } %>--throw-deprecation --ui bdd --full-trace --recursive --reporter mocha-multi --reporter-options spec=-,xunit=./reports/unit.xml,doc=./reports/unit.html test/unit",
     "watch:coverage": "mkdir -p build; nodemon --ignore './build' --exec 'npm run coverage -s' --legacy-watch",
     "watch:test": "mkdir -p build; nodemon --ignore './build' --exec 'npm run test -s' --legacy-watch",

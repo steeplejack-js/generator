@@ -10,14 +10,21 @@
 const supertest = require('supertest');
 
 /* Files */
-const {expect} = require('./setup');
-const server = require('../../src/app');
+const { expect } = require('./setup');
 
-/* Get the app */
-const app = server.default || server;
+let request;
 
-/* Create a request object with the application injected */
-const request = supertest(app.server.getServer());
+if (process.env.<%- envvarPrefix %>SMOKE_TEST_URL) {
+  /* Connect to the URL */
+  request = supertest(process.env.<%- envvarPrefix %>SMOKE_TEST_URL);
+} else {
+  /* Connect to the local app */
+  const server = require('../../src/app');
+
+  /* Get the app */
+  const app = server.default || server;
+  request = supertest(app.server.getServer());
+}
 
 module.exports = {
   expect,
