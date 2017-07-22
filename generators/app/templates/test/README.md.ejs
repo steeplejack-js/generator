@@ -1,0 +1,19 @@
+# Testing
+
+This is where the automated tests for the application live.
+
+## Unit
+
+The unit tests test all of the functionality of the application. These are done against mocked instances and **NEVER**
+against real services. This allows us to test things that may happen rarely, such as database failures.
+
+## End-to-End (e2e)
+
+The end-to-end tests test the journey from the initial call, to the persistence layer and the response. Typically, these
+will not be as comprehensive as the unit tests - a random database failure is difficult to simulate reliably.
+
+## Smoke
+
+The smoke tests are performed to test whether a new deployment can be commissioned to the live instance. These are the
+least rigorous of the tests, as these are idempotent and should never change the data in the persistence layer. See
+[blue/green deployments](https://www.martinfowler.com/bliki/BlueGreenDeployment.html)A
