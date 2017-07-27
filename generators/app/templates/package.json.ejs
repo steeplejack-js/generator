@@ -27,24 +27,24 @@
   },
   "scripts": {
     "clean": "rm -Rf ./build ./coverage ./dist<% if (server === 'express') { %> ./src/themes/*/public/assets/scripts ./src/themes/*/public/assets/styles<% } %>",
-    "clean:all": "npm run clean && rm -Rf .nyc_output npm-debug.log",
-    "ci": "npm test -s && npm run coverage -s && npm run compile -s",
-    "compile": "npm run clean:all && <% if (server === 'express') { %>npm run compile:scripts && <% } %>npm run compile:js -s && npm run copy",
+    "clean:all": "npm run -s clean && rm -Rf .nyc_output npm-debug.log",
+    "ci": "npm test && npm run -s coverage && npm run -s compile",
+    "compile": "npm run -s clean:all && <% if (server === 'express') { %>npm run -s compile:scripts && <% } %>npm run -s compile:js && npm run -s copy",
     "compile:js": "mkdir -p build/src && <% if (compile) { %>cross-env NODE_ENV=server babel --source-maps=inline --out-dir ./build/src ./src<% } else { %>cp -Rf src build<% } %>",<% if (server === 'express') { %>
     "compile:scripts": "webpack -p && rm ./src/themes/*/public/assets/styles/*.js* || true",<% } %>
-    "copy": "npm run copy:json -s && npm run copy:docker -s<% if (server === 'express') { %> && npm run copy:public -s<% } %>",
+    "copy": "npm run -s copy:json && npm run -s copy:docker<% if (server === 'express') { %> && npm run -s copy:public<% } %>",
     "copy:docker": "cp Dockerfile build",
     "copy:json": "cp package.json build && json -I -f ./build/package.json -e 'this.devDependencies={},this.nyc=undefined'<% if (compile) { %>; cp src/*.json build/src<% } %>",<% if (server === 'express') { %>
     "copy:public": "for file in ./src/themes/*; do cp -r \"${file}/public\" \"${PWD}/build/${file}\" && cp -r \"${file}/templates\" \"${PWD}/build/${file}\"; done && rm -f ./build/src/themes/*/public/.gitkeep",<% } %>
     "coverage": "cross-env NODE_ENV=test nyc mocha --ui bdd --recursive test/unit",
-    "dist": "npm run compile && mkdir -p dist && cd build && npm install --production && tar -zcvf ../dist/dist.tar.gz ./",
+    "dist": "npm run -s compile && mkdir -p dist && cd build && npm install --production && tar -zcvf ../dist/dist.tar.gz ./",
     "postversion": "git push --tags && git push",
-    "serve": "npm run clean && <% if (server === 'express') { %>concurrently --kill-others --kill-others-on-fail '<% } %>npm run -s serve:server<% if (server === 'express') { %>' 'webpack --watch'<% } %>",
+    "serve": "npm run -s clean && <% if (server === 'express') { %>concurrently --kill-others --kill-others-on-fail '<% } %>npm run -s serve:server<% if (server === 'express') { %>' 'webpack --watch'<% } %>",
     "serve:server": "<% if (compile) { %>cross-env NODE_ENV=server <% } %>nodemon<% if (compile) { %> --exec babel-node<% } %> --inspect=5858 --legacy-watch --ignore ./src/themes ./src/app.js | bunyan",
     "start": "node<% if (compile) { %> --require source-map-support/register<% } %> ./",
-    "test": "npm run test:lint -s && npm run test:unit -s && npm run test:e2e -s",
+    "test": "npm run -s test:lint && npm run -s test:unit && npm run -s test:e2e",
     "test:e2e": "<% if (compile) { %>cross-env NODE_ENV=server <% } %><%- envvarPrefix %>LOGGING_STREAMS_STDOUT_ACTIVE=false mocha <% if (compile) { %>--compilers js:babel-register <% } %>--throw-deprecation --ui bdd --full-trace --recursive --reporter mocha-multi --reporter-options spec=-,xunit=./reports/e2e.xml,doc=./reports/e2e.html test/e2e/test",
-    "test:lint": "npm run test:lint:src -s && npm run test:lint:test",<% if (lint === 'airbnb') { %>
+    "test:lint": "npm run -s test:lint:src && npm run -s test:lint:test",<% if (lint === 'airbnb') { %>
     "test:lint:src": "eslint src",
     "test:lint:test": "eslint test",<% } else if (lint === 'standard') { %>
     "test:lint:src": "standard src",
@@ -55,13 +55,13 @@
     "test:lint:test": "echo 'no linting set up'; exit 0",<% } %>
     "test:smoke": "<% if (compile) { %>cross-env NODE_ENV=server <% } %><%- envvarPrefix %>LOGGING_STREAMS_STDOUT_ACTIVE=false mocha <% if (compile) { %>--compilers js:babel-register <% } %>--throw-deprecation --ui bdd --full-trace --recursive --reporter mocha-multi --reporter-options spec=-,xunit=./reports/smoke.xml,doc=./reports/smoke.html test/smoke",
     "test:unit": "<% if (compile) { %>cross-env NODE_ENV=server <% } %>mocha <% if (compile) { %>--compilers js:babel-register <% } %>--throw-deprecation --ui bdd --full-trace --recursive --reporter mocha-multi --reporter-options spec=-,xunit=./reports/unit.xml,doc=./reports/unit.html test/unit",
-    "watch:coverage": "mkdir -p build; nodemon --ignore './build' --exec 'npm run coverage -s' --legacy-watch",
-    "watch:test": "mkdir -p build; nodemon --ignore './build' --exec 'npm run test -s' --legacy-watch",
-    "watch:test:e2e": "mkdir -p build; nodemon --ignore './build' --exec 'npm run test:e2e -s' --legacy-watch",
-    "watch:test:lint": "mkdir -p build; nodemon --ignore './build' --exec 'npm run test:lint -s' --legacy-watch",
-    "watch:test:lint:src": "mkdir -p build; nodemon --ignore './build' --exec 'npm run test:lint:src -s' --legacy-watch",
-    "watch:test:lint:test": "mkdir -p build; nodemon --ignore './build' --exec 'npm run test:lint:test -s' --legacy-watch",
-    "watch:test:unit": "mkdir -p build; nodemon --ignore './build' --exec 'npm run test:unit -s' --legacy-watch"
+    "watch:coverage": "mkdir -p build; nodemon --ignore './build' --exec 'npm run -s coverage' --legacy-watch",
+    "watch:test": "mkdir -p build; nodemon --ignore './build' --exec 'npm run -s test' --legacy-watch",
+    "watch:test:e2e": "mkdir -p build; nodemon --ignore './build' --exec 'npm run -s test:e2e' --legacy-watch",
+    "watch:test:lint": "mkdir -p build; nodemon --ignore './build' --exec 'npm run -s test:lint' --legacy-watch",
+    "watch:test:lint:src": "mkdir -p build; nodemon --ignore './build' --exec 'npm run -s test:lint:src' --legacy-watch",
+    "watch:test:lint:test": "mkdir -p build; nodemon --ignore './build' --exec 'npm run -s test:lint:test' --legacy-watch",
+    "watch:test:unit": "mkdir -p build; nodemon --ignore './build' --exec 'npm run -s test:unit' --legacy-watch"
   },
   "author": "<%- author %>",
   "dependencies": {
