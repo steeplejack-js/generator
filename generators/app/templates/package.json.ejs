@@ -32,9 +32,10 @@
     "compile": "npm run -s clean:all && <% if (server === 'express') { %>npm run -s compile:scripts && <% } %>npm run -s compile:js && npm run -s copy",
     "compile:js": "mkdir -p build/src && <% if (compile) { %>cross-env NODE_ENV=server babel --source-maps=inline --out-dir ./build/src ./src<% } else { %>cp -Rf src build<% } %>",<% if (server === 'express') { %>
     "compile:scripts": "webpack -p && rm ./src/themes/*/public/assets/styles/*.js* || true",<% } %>
-    "copy": "npm run -s copy:json && npm run -s copy:docker<% if (server === 'express') { %> && npm run -s copy:public<% } %>",
+    "copy": "npm run -s copy:json && npm run -s copy:docker<% if (server === 'express') { %> && npm run -s copy:public<% } %> && npm run -s copy:npm",
     "copy:docker": "cp Dockerfile build",
-    "copy:json": "cp package.json build && json -I -f ./build/package.json -e 'this.devDependencies={},this.nyc=undefined'<% if (compile) { %>; cp src/*.json build/src<% } %>",<% if (server === 'express') { %>
+    "copy:json": "cp package.json build && json -I -f ./build/package.json -e 'this.devDependencies={},this.nyc=undefined'<% if (compile) { %>; cp src/*.json build/src<% } %>",
+    "copy:npm": "cp -Rf node_modules build && (cd build && npm prune --production)",<% if (server === 'express') { %>
     "copy:public": "for file in ./src/themes/*; do cp -r \"${file}/public\" \"${PWD}/build/${file}\" && cp -r \"${file}/templates\" \"${PWD}/build/${file}\"; done && rm -f ./build/src/themes/*/public/.gitkeep",<% } %>
     "coverage": "cross-env NODE_ENV=test nyc mocha --ui bdd --recursive test/unit",
     "dist": "npm run -s compile && mkdir -p dist && cd build && npm install --production && tar -zcvf ../dist/dist.tar.gz ./",
