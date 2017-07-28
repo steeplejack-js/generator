@@ -29,7 +29,7 @@
     "clean": "rm -Rf ./build ./coverage ./dist<% if (server === 'express') { %> ./src/themes/*/public/assets/scripts ./src/themes/*/public/assets/styles<% } %>",
     "clean:all": "npm run -s clean && rm -Rf .nyc_output npm-debug.log",
     "ci": "npm test && npm run -s coverage && npm run -s compile",
-    "compile": "npm run -s clean:all && <% if (server === 'express') { %>npm run -s compile:scripts && <% } %>npm run -s compile:js && npm run -s copy",
+    "compile": "<% if (server === 'express') { %>npm run -s compile:scripts && <% } %>npm run -s compile:js && npm run -s copy",
     "compile:js": "mkdir -p build/src && <% if (compile) { %>cross-env NODE_ENV=server babel --source-maps=inline --out-dir ./build/src ./src<% } else { %>cp -Rf src build<% } %>",<% if (server === 'express') { %>
     "compile:scripts": "webpack -p && rm ./src/themes/*/public/assets/styles/*.js* || true",<% } %>
     "copy": "npm run -s copy:json && npm run -s copy:docker<% if (server === 'express') { %> && npm run -s copy:public<% } %> && npm run -s copy:npm",
