@@ -1,0 +1,9 @@
+VOLUME ?= --volume="${PWD}:/opt/app"
+
+install:
+	docker-compose run ${VOLUME} --rm app npm install
+.PHONE: install
+
+serve:
+	docker-compose run ${VOLUME} --service-ports --rm app
+.PHONY: serve
