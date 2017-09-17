@@ -26,7 +26,7 @@
     "instrument": <%- !compile %>
   },
   "scripts": {
-    "clean": "rm -Rf ./build ./coverage ./dist<% if (server === 'express') { %> ./src/themes/*/public/assets/scripts ./src/themes/*/public/assets/styles<% } %>",
+    "clean": "rm -Rf ./build ./coverage ./dist<% if (server === 'express') { %> ./src/themes/*/public/assets/scripts ./src/themes/*/public/assets/styles<% } %> ./reports",
     "clean:all": "npm run clean && rm -Rf .nyc_output npm-debug.log",
     "ci": "npm test -s && npm run coverage -s && npm run compile -s",
     "compile": "npm run clean:all && <% if (server === 'express') { %>npm run compile:scripts && <% } %>npm run compile:js -s && npm run copy",
